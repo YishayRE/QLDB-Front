@@ -6,7 +6,7 @@ import { Icon } from 'astro-icon'
 ---
 
 <LoginLayout title="Login">
-  <section class="bg-neutral-100">
+  <section class="background-color: #DEECFE;">
     <div class="login">
       <div class="login__inner reveal h-screen">
         <div class="inner__brand">
@@ -23,16 +23,13 @@ import { Icon } from 'astro-icon'
           </div>
         </div>
         <div class="inner__form space-content">
-          <Notification>
-            <Icon pack="majesticons" name="information-circle-line" /><p class="size-14">Log in using <strong>admin@astro.demo</strong> and <strong>Astronaut570</strong>.</p>          
-          </Notification>
           <div class="space-content">
             <h1>Login</h1>
             <LoginForm />
           </div>
         </div>
         <div class="login__footer text-neutral-700">
-          <p><em>Build fast dashboards, faster.</em></p>
+          <p><em>Blockchain with Astro.</em></p>
         </div>
       </div>
       <div class="login__background h-screen" />
@@ -94,7 +91,7 @@ import { Icon } from 'astro-icon'
     .login__background {
       display: none;
       background-color: #000;
-      background-image: url("/login-background.webp");
+      background-image: url("/blockchain.jpg");
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
