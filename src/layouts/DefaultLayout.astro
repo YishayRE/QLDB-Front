@@ -1,7 +1,8 @@
 ---
 import '../assets/scss/globals.scss'
 import Navigation from '../components/Navigation.astro'
-import { DarkMode, SkipLinks } from 'accessible-astro-components'
+import DarkMode from '../components/accessible-astro-components/DarkMode.astro';
+import SkipLinks from '../components/accessible-astro-components/SkipLinks.astro';
 import { Icon } from 'astro-icon'
 
 const {title} = Astro.props
@@ -37,10 +38,16 @@ let subtitle = 'Accessible Astro Dashboard'
       <SkipLinks />
     </header>
     <div class="ui-controls">
-      <DarkMode client:load />
+      <DarkMode />
     </div>
     <div class="admin-interface">
       <Navigation>
+        <li class="menu-item">
+          <a href="/material/1">
+            <Icon pack="mdi" name="tractor" /> 
+            <span class="sr-only">Materiales</span>
+          </a>
+        </li>
         <li class="menu-item">
           <a href="/">
             <Icon pack="majesticons" name="home-line" /> 
@@ -65,12 +72,6 @@ let subtitle = 'Accessible Astro Dashboard'
             <span class="sr-only">Messages</span>
           </a>
         </li>
-        <li class="menu-item">
-          <a href="/media/">
-            <Icon pack="majesticons" name="image-line" /> 
-            <span class="sr-only">Media</span>
-          </a>
-        </li>
       </Navigation>    
       <main id="main-content">
         <slot />
@@ -80,7 +81,7 @@ let subtitle = 'Accessible Astro Dashboard'
 </html>
 
 <script>
-  let isLoggedIn = await localStorage.getItem('isLoggedIn')
+  let isLoggedIn = localStorage.getItem('isLoggedIn');
 
   if (isLoggedIn === null) {
     window.location.href = '/login'

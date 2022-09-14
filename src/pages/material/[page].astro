@@ -1,0 +1,137 @@
+---
+import DefaultLayout from '../../layouts/DefaultLayout.astro';
+import Card from '../../components/accessible-astro-components/Card.astro';
+import Modal from '../../components/accessible-astro-components/Modal.astro';
+import Pagination from '../../components/accessible-astro-components/Pagination.astro';
+
+export async function getStaticPaths({ paginate }) {
+  const array = [
+    {
+      url: "/link-to-my-post",
+      img: "http://t1.gstatic.com/licensed-image?q=tbn:ANd9GcT_bkAj3p5IFFoID3Ur7GuhZIbPjYHTykIb0am_oGun--e_Q40B41OPYoWIWgg5rUdrl8ZoytBvs_8faqfdrUA",
+      title: "Lorena",
+      footer: "Tony Stark"
+    },
+    {
+      url: "/link-to-my-post",
+      img: "http://t1.gstatic.com/licensed-image?q=tbn:ANd9GcT_bkAj3p5IFFoID3Ur7GuhZIbPjYHTykIb0am_oGun--e_Q40B41OPYoWIWgg5rUdrl8ZoytBvs_8faqfdrUA",
+      title: "Lorena",
+      footer: "Tony Stark"
+    },
+    {
+      url: "/link-to-my-post",
+      img: "http://t1.gstatic.com/licensed-image?q=tbn:ANd9GcT_bkAj3p5IFFoID3Ur7GuhZIbPjYHTykIb0am_oGun--e_Q40B41OPYoWIWgg5rUdrl8ZoytBvs_8faqfdrUA",
+      title: "Lorena",
+      footer: "Tony Stark"
+    },
+    {
+      url: "/link-to-my-post",
+      img: "http://t1.gstatic.com/licensed-image?q=tbn:ANd9GcT_bkAj3p5IFFoID3Ur7GuhZIbPjYHTykIb0am_oGun--e_Q40B41OPYoWIWgg5rUdrl8ZoytBvs_8faqfdrUA",
+      title: "Lorena",
+      footer: "Tony Stark"
+    },
+    {
+      url: "/link-to-my-post",
+      img: "http://t1.gstatic.com/licensed-image?q=tbn:ANd9GcT_bkAj3p5IFFoID3Ur7GuhZIbPjYHTykIb0am_oGun--e_Q40B41OPYoWIWgg5rUdrl8ZoytBvs_8faqfdrUA",
+      title: "Lorena",
+      footer: "Tony Stark"
+    },
+    {
+      url: "/link-to-my-post",
+      img: "http://t1.gstatic.com/licensed-image?q=tbn:ANd9GcT_bkAj3p5IFFoID3Ur7GuhZIbPjYHTykIb0am_oGun--e_Q40B41OPYoWIWgg5rUdrl8ZoytBvs_8faqfdrUA",
+      title: "Lorena",
+      footer: "Tony Stark"
+    },
+    {
+      url: "/link-to-my-post",
+      img: "http://t1.gstatic.com/licensed-image?q=tbn:ANd9GcT_bkAj3p5IFFoID3Ur7GuhZIbPjYHTykIb0am_oGun--e_Q40B41OPYoWIWgg5rUdrl8ZoytBvs_8faqfdrUA",
+      title: "Lorena",
+      footer: "Tony Stark"
+    },
+    {
+      url: "/link-to-my-post",
+      img: "http://t1.gstatic.com/licensed-image?q=tbn:ANd9GcT_bkAj3p5IFFoID3Ur7GuhZIbPjYHTykIb0am_oGun--e_Q40B41OPYoWIWgg5rUdrl8ZoytBvs_8faqfdrUA",
+      title: "Lorena",
+      footer: "Tony Stark"
+    },
+    {
+      url: "/link-to-my-post",
+      img: "http://t1.gstatic.com/licensed-image?q=tbn:ANd9GcT_bkAj3p5IFFoID3Ur7GuhZIbPjYHTykIb0am_oGun--e_Q40B41OPYoWIWgg5rUdrl8ZoytBvs_8faqfdrUA",
+      title: "Lorena",
+      footer: "Tony Stark"
+    },
+    {
+      url: "/link-to-my-post",
+      img: "http://t1.gstatic.com/licensed-image?q=tbn:ANd9GcT_bkAj3p5IFFoID3Ur7GuhZIbPjYHTykIb0am_oGun--e_Q40B41OPYoWIWgg5rUdrl8ZoytBvs_8faqfdrUA",
+      title: "Lorena",
+      footer: "Tony Stark"
+    }
+  ];
+  return paginate(array, { pageSize: 6 });
+}
+
+const { page } = Astro.props;
+---
+
+<DefaultLayout title="Media">
+  <section>
+    <h1>Materiales</h1><br>
+    <p class="size-20">Muestra de los materiales enviados.</p>
+  </section>
+  
+  <section class="margin-32">
+    <div class="space-content">
+      <button id="modal-trigger" class="button color-secondary">Agregar nuevo</button>
+      <button id="content-trigger" class="button color-success">Ver en tabla</button>
+
+      <Modal
+        triggerId="modal-trigger"
+        title="Add media"
+        closeText="Cancel"
+      >
+        <p>You can use this component to include a form that adds a new media item to the list.</p>
+        <img src="http://t1.gstatic.com/licensed-image?q=tbn:ANd9GcT_bkAj3p5IFFoID3Ur7GuhZIbPjYHTykIb0am_oGun--e_Q40B41OPYoWIWgg5rUdrl8ZoytBvs_8faqfdrUA" alt="Holi" srcset="">
+      </Modal>
+      <div class="grid small-grid-1 medium-grid-2 large-grid-3 equal-height" id="content">
+        {
+          page.data.map((item, index) => {
+            return (
+              <Card
+                url={item.url}
+                img={item.img}
+                title={item.title}
+                footer={item.footer}
+              >
+                Lorem
+              </Card>
+            )
+          })
+        }
+      </div>
+    </div>
+    <div class="grid align-horizontal margin-32">
+      <Pagination 
+        previousPage={page.url.prev}
+        nextPage={page.url.next}
+        totalPages={page.lastPage}
+        currentPage={page.currentPage}
+      />
+    </div>
+  </section>
+</DefaultLayout>
+
+<style lang="scss" is:global>
+  .media {
+    width: 100%;
+    max-height: 250px;
+    object-fit: cover;
+  }
+</style>
+
+<script>
+  const button = document.querySelector('#content-trigger');
+  button.addEventListener('click', () => {
+    const content = document.querySelector('#content');
+    content.classList.toggle('hidden');
+  });
+</script>
