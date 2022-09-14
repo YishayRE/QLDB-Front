@@ -3,6 +3,7 @@ import DefaultLayout from '../../layouts/DefaultLayout.astro';
 import Card from '../../components/accessible-astro-components/Card.astro';
 import Modal from '../../components/accessible-astro-components/Modal.astro';
 import Pagination from '../../components/accessible-astro-components/Pagination.astro';
+import Table from '../../components/Table.astro';
 
 export async function getStaticPaths({ paginate }) {
   const array = [
@@ -93,6 +94,7 @@ const { page } = Astro.props;
         <img src="http://t1.gstatic.com/licensed-image?q=tbn:ANd9GcT_bkAj3p5IFFoID3Ur7GuhZIbPjYHTykIb0am_oGun--e_Q40B41OPYoWIWgg5rUdrl8ZoytBvs_8faqfdrUA" alt="Holi" srcset="">
       </Modal>
       <div class="grid small-grid-1 medium-grid-2 large-grid-3 equal-height" id="content">
+        <!--
         {
           page.data.map((item, index) => {
             return (
@@ -107,7 +109,10 @@ const { page } = Astro.props;
             )
           })
         }
+      -->
       </div>
+
+      <Table
     </div>
     <div class="grid align-horizontal margin-32">
       <Pagination 
@@ -129,9 +134,11 @@ const { page } = Astro.props;
 </style>
 
 <script>
-  const button = document.querySelector('#content-trigger');
+  const button = document.getElementById('content-trigger');
+
   button.addEventListener('click', () => {
     const content = document.querySelector('#content');
     content.classList.toggle('hidden');
+    button.blur();
   });
 </script>

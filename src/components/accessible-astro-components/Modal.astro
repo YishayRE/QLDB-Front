@@ -62,6 +62,7 @@ const {
 
     modal.classList.add('show')
     body.classList.add('modal-is-active')
+    modalTrigger.blur();
     modalTitle.focus()
     document.addEventListener('keydown', trapFocus)
 
@@ -75,14 +76,13 @@ const {
   const closeModal = _ => {
     modal.classList.remove('show')
     body.classList.remove('modal-is-active')
-    modalTrigger.focus({ preventScroll: true })
     document.removeEventListener('keydown', trapFocus)
   }
-
+  
   // execution
-  teleportToRoot(modal)
-
-  modalTrigger.addEventListener('click', openModal)
+  teleportToRoot(modal);
+  
+  modalTrigger.addEventListener('click', openModal);
 
   modalCloseButton.addEventListener('click', closeModal)
 
