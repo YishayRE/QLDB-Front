@@ -72,6 +72,7 @@ export async function getStaticPaths({ paginate }) {
 }
 
 const { page } = Astro.props;
+const visible = false;
 ---
 
 <DefaultLayout title="Media">
@@ -93,26 +94,62 @@ const { page } = Astro.props;
         <p>You can use this component to include a form that adds a new media item to the list.</p>
         <img src="http://t1.gstatic.com/licensed-image?q=tbn:ANd9GcT_bkAj3p5IFFoID3Ur7GuhZIbPjYHTykIb0am_oGun--e_Q40B41OPYoWIWgg5rUdrl8ZoytBvs_8faqfdrUA" alt="Holi" srcset="">
       </Modal>
-      <div class="grid small-grid-1 medium-grid-2 large-grid-3 equal-height" id="content">
-        <!--
-        {
-          page.data.map((item, index) => {
-            return (
-              <Card
-                url={item.url}
-                img={item.img}
-                title={item.title}
-                footer={item.footer}
-              >
-                Lorem
-              </Card>
-            )
-          })
-        }
-      -->
-      </div>
 
-      <Table
+      {
+        visible 
+          ? <div class="grid small-grid-1 medium-grid-2 large-grid-3 equal-height" id="content">
+            {
+              page.data.map((item, index) => {
+                return (
+                  <Card
+                    url={item.url}
+                    img={item.img}
+                    title={item.title}
+                    footer={item.footer}
+                  >
+                    Lorem
+                  </Card>
+                );
+              })
+            }
+          </div>
+          : <Table>
+            <th slot="th">Nombre</th>
+            <th slot="th">Fecha de recolección</th>
+            <th slot="th">Cantidad</th>
+            <th slot="th">Origen</th>
+
+            {
+              page.data.map((item, index) => {
+                return (
+                <tr slot="tr" class="" role="alert">
+                  <td class="d-flex align-items-center">
+                    <div class="img" style=
+                    {
+                      "background-image: url(" + item.img + ");"
+                    }
+                    ></div>
+                    <div class="pl-3 email">
+                        <span>{item.title}</span>
+                        <span>Added: 01/03/2020</span>
+                    </div>
+                  </td>
+                  <td class="align-items-center">
+                      <div class="pl-3 email">
+                          <span>{item.url}</span>
+                          <span>Added: 01/03/2020</span>
+                      </div>
+                  </td>
+                  <td>{item.footer}</td>
+                  <td class="status"><span class="active">Active</span></td>
+                </tr>
+                );
+              })
+            }
+          </Table>
+      }
+      
+
     </div>
     <div class="grid align-horizontal margin-32">
       <Pagination 

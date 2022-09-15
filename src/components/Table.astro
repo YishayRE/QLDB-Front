@@ -1,40 +1,14 @@
 ---
-let html;
-
-if (Astro.slots.has('th')) {
-  html = await Astro.slots.render('default')
-}
-
-console.log(html);
 ---
 
 <table class="table table-responsive-xl">
     <thead>
       <tr>
-        <th>Nombre</th>
-        <th>Fecha de recolección</th>
-        <th>Cantidad</th>
-        <th>Origen</th>
+        <slot name="th"/>
       </tr>
     </thead>
     <tbody>
-      <tr class="" role="alert">
-          <td>
-              <label class="checkbox-wrap checkbox-primary">
-                    <input type="checkbox" checked>
-                    <span class="checkmark"></span>
-                  </label>
-          </td>
-        <td class="d-flex align-items-center">
-            <div class="img" style="background-image: url(images/person_1.jpg);"></div>
-            <div class="pl-3 email">
-                <span>markotto@email.com</span>
-                <span>Added: 01/03/2020</span>
-            </div>
-        </td>
-        <td>Markotto89</td>
-        <td class="status"><span class="active">Active</span></td>
-      </tr>
+          <slot name="tr" />
       <tr class="" role="alert">
           <td>
               <label class="checkbox-wrap checkbox-primary">
@@ -43,7 +17,7 @@ console.log(html);
                   </label>
           </td>
         <td class="d-flex align-items-center">
-            <div class="img" style="background-image: url(images/person_2.jpg);"></div>
+            <div class="img" style="background-image: url(http://t1.gstatic.com/licensed-image?q=tbn:ANd9GcT_bkAj3p5IFFoID3Ur7GuhZIbPjYHTykIb0am_oGun--e_Q40B41OPYoWIWgg5rUdrl8ZoytBvs_8faqfdrUA);"></div>
             <div class="pl-3 email">
                 <span>jacobthornton@email.com</span>
                 <span>Added: 01/03/2020</span>
@@ -60,7 +34,7 @@ console.log(html);
                   </label>
           </td>
         <td class="d-flex align-items-center">
-            <div class="img" style="background-image: url(images/person_3.jpg);"></div>
+            <div class="img" style="background-image: url(http://t1.gstatic.com/licensed-image?q=tbn:ANd9GcT_bkAj3p5IFFoID3Ur7GuhZIbPjYHTykIb0am_oGun--e_Q40B41OPYoWIWgg5rUdrl8ZoytBvs_8faqfdrUA);"></div>
             <div class="pl-3 email">
                 <span>larrybird@email.com</span>
                 <span>Added: 01/03/2020</span>
@@ -77,7 +51,7 @@ console.log(html);
                   </label>
           </td>
         <td class="d-flex align-items-center">
-            <div class="img" style="background-image: url(images/person_4.jpg);"></div>
+            <div class="img" style="background-image: url(http://t1.gstatic.com/licensed-image?q=tbn:ANd9GcT_bkAj3p5IFFoID3Ur7GuhZIbPjYHTykIb0am_oGun--e_Q40B41OPYoWIWgg5rUdrl8ZoytBvs_8faqfdrUA);"></div>
             <div class="pl-3 email">
                 <span>johndoe@email.com</span>
                 <span>Added: 01/03/2020</span>
@@ -94,7 +68,7 @@ console.log(html);
                   </label>
           </td>
         <td class="d-flex align-items-center border-bottom-0">
-            <div class="img" style="background-image: url(images/person_1.jpg);"></div>
+            <div class="img" style="background-image: url(http://t1.gstatic.com/licensed-image?q=tbn:ANd9GcT_bkAj3p5IFFoID3Ur7GuhZIbPjYHTykIb0am_oGun--e_Q40B41OPYoWIWgg5rUdrl8ZoytBvs_8faqfdrUA);"></div>
             <div class="pl-3 email">
                 <span>garybird@email.com</span>
                 <span>Added: 01/03/2020</span>
