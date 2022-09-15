@@ -8,102 +8,26 @@
       </tr>
     </thead>
     <tbody>
-          <slot name="tr" />
-      <tr class="" role="alert">
-          <td>
-              <label class="checkbox-wrap checkbox-primary">
-                    <input type="checkbox">
-                    <span class="checkmark"></span>
-                  </label>
-          </td>
-        <td class="d-flex align-items-center">
-            <div class="img" style="background-image: url(http://t1.gstatic.com/licensed-image?q=tbn:ANd9GcT_bkAj3p5IFFoID3Ur7GuhZIbPjYHTykIb0am_oGun--e_Q40B41OPYoWIWgg5rUdrl8ZoytBvs_8faqfdrUA);"></div>
-            <div class="pl-3 email">
-                <span>jacobthornton@email.com</span>
-                <span>Added: 01/03/2020</span>
-            </div>
-        </td>
-        <td>Jacobthornton</td>
-        <td class="status"><span class="waiting">Waiting for Resassignment</span></td>
-      </tr>
-      <tr class="" role="alert">
-          <td>
-              <label class="checkbox-wrap checkbox-primary">
-                    <input type="checkbox">
-                    <span class="checkmark"></span>
-                  </label>
-          </td>
-        <td class="d-flex align-items-center">
-            <div class="img" style="background-image: url(http://t1.gstatic.com/licensed-image?q=tbn:ANd9GcT_bkAj3p5IFFoID3Ur7GuhZIbPjYHTykIb0am_oGun--e_Q40B41OPYoWIWgg5rUdrl8ZoytBvs_8faqfdrUA);"></div>
-            <div class="pl-3 email">
-                <span>larrybird@email.com</span>
-                <span>Added: 01/03/2020</span>
-            </div>
-        </td>
-        <td>Larry_bird</td>
-        <td class="status"><span class="active">Active</span></td>
-      </tr>
-      <tr class="" role="alert">
-          <td>
-              <label class="checkbox-wrap checkbox-primary">
-                    <input type="checkbox">
-                    <span class="checkmark"></span>
-                  </label>
-          </td>
-        <td class="d-flex align-items-center">
-            <div class="img" style="background-image: url(http://t1.gstatic.com/licensed-image?q=tbn:ANd9GcT_bkAj3p5IFFoID3Ur7GuhZIbPjYHTykIb0am_oGun--e_Q40B41OPYoWIWgg5rUdrl8ZoytBvs_8faqfdrUA);"></div>
-            <div class="pl-3 email">
-                <span>johndoe@email.com</span>
-                <span>Added: 01/03/2020</span>
-            </div>
-        </td>
-        <td>Johndoe1990</td>
-        <td class="status"><span class="active">Active</span></td>
-      </tr>
-      <tr class="alert" role="alert">
-          <td class="border-bottom-0">
-              <label class="checkbox-wrap checkbox-primary">
-                    <input type="checkbox">
-                    <span class="checkmark"></span>
-                  </label>
-          </td>
-        <td class="d-flex align-items-center border-bottom-0">
-            <div class="img" style="background-image: url(http://t1.gstatic.com/licensed-image?q=tbn:ANd9GcT_bkAj3p5IFFoID3Ur7GuhZIbPjYHTykIb0am_oGun--e_Q40B41OPYoWIWgg5rUdrl8ZoytBvs_8faqfdrUA);"></div>
-            <div class="pl-3 email">
-                <span>garybird@email.com</span>
-                <span>Added: 01/03/2020</span>
-            </div>
-        </td>
-        <td class="border-bottom-0">Garybird_2020</td>
-        <td class="status border-bottom-0"><span class="waiting">Waiting for Resassignment</span></td>
-      </tr>
+        <slot name="tr" />
     </tbody>
   </table>
 
-<style>
-    /*
-    tr{
-        background-color: rgb(150, 63, 63); }
-        */
+<style is:global>
 
     tr th:nth-child(1){
         width:fit-content;
-        background-color: rgb(150, 63, 63);
     }
 
     tr th:nth-child(2){
         width:fit-content;
-        background-color: rgb(63, 150, 76);
     }
 
     tr th:nth-child(3){
         width: fit-content;
-        background-color: rgb(150, 63, 63);
     }
 
     tr th:nth-child(4){
         width: fit-content;
-        background-color: rgb(63, 64, 150);
     }
 
     .alert {
@@ -122,36 +46,6 @@
         position: absolute;
         top: 0;
         left: 0; }
-
-    .checkbox-primary {
-        color: #40bfc1; }
-        .checkbox-primary input:checked ~ .checkmark:after {
-            color: #40bfc1; }
-
-    .checkbox-wrap {
-        display: block;
-        position: relative;
-        cursor: pointer;
-        font-size: 16px;
-        font-weight: 500;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none; }
-    
-    .close {
-        float: right;
-        font-size: 1.5rem;
-        font-weight: 700;
-        line-height: 1;
-        color: #000;
-        text-shadow: 0 1px 0 #fff;
-        opacity: .5; }
-        .close:hover {
-            color: #000;
-            text-decoration: none; }
-        .close:not(:disabled):not(.disabled):hover, .close:not(:disabled):not(.disabled):focus {
-            opacity: .75; }
     
     .d-flex {
         display: -webkit-box !important;
@@ -165,48 +59,36 @@
 
     .pl-3{
         padding-left: 1rem !important; }
-    
-    .table {
-        width: 100%;
-        margin-bottom: 1rem;
-        color: #212529; }
-        .table th,
-        .table td {
-            padding: 0.75rem;
-            vertical-align: top;
-            border-top: 1px solid #dee2e6; }
-        .table thead th {
-            vertical-align: bottom;
-            border-bottom: 2px solid #dee2e6; }
-        .table tbody + tbody {
-            border-top: 2px solid #dee2e6; }
 
     .table {
         min-width: 1000px !important;
         width: 100%;
         -webkit-box-shadow: 0px 5px 12px -12px rgba(0, 0, 0, 0.29);
-        -moz-box-shadow: 0px 5px 12px -12px rgba(0, 0, 0, 0.29);
-        box-shadow: 0px 5px 12px -12px rgba(0, 0, 0, 0.29); }
-    .table thead th {
-        border: none;
-        /*padding: 30px;*/
-        font-size: 13px;
-        font-weight: 500;
-        color: gray; }
+        -moz-box-shadow: 0px 5px 12px -12px rgba(0, 0, 0, 0.29); }
+
+    .table {
+        width: 100%;
+        margin-bottom: 1rem;}
+
     .table thead tr {
-        background: #fff;
-        border-bottom: 4px solid #eceffa; }
+        vertical-align: bottom;
+        font-size: 1rem; 
+        border-bottom: 4px solid black;}
+
+    .table th,.table td {
+        padding: 0.75rem;
+        vertical-align: top;}
+
     .table tbody tr {
-        margin-bottom: 10px;
-        border-bottom: 4px solid #f8f9fd; }
-        .table tbody tr:last-child {
+        margin-bottom: 10px; }
+
+    .table tbody tr:last-child {
         border-bottom: 0; }
+
     .table tbody th, .table tbody td {
-        border: none;
-        /*padding: 30px;*/
         font-size: 14px;
-        /*background: #fff;*/
         vertical-align: middle; }
+
     .table tbody td.status span {
         position: relative;
         border-radius: 30px;
@@ -219,25 +101,36 @@
         height: 10px;
         content: '';
         border-radius: 50%; }
+        
     .table tbody td.status .active {
         background: #cff6dd;
         color: #1fa750; }
-        .table tbody td.status .active:after {
+
+    .table tbody td.status .active:after {
         background: #23bd5a; }
+
     .table tbody td.status .waiting {
         background: #fdf5dd;
         color: #cfa00c; }
         .table tbody td.status .waiting:after {
         background: #f2be1d; }
+
     .table tbody td .img {
         width: 50px;
         height: 50px;
         border-radius: 50%; }
+
     .table tbody td .email span {
         display: block; }
-        .table tbody td .email span:last-child {
+        
+    .table tbody td .email span:last-child {
         font-size: 12px;
-        color: rgba(0, 0, 0, 0.3); }
+        color: var(--neutral-800); }
+    
+    .darkmode .table tbody td .email span:last-child {
+        font-size: 12px;
+        color: var(--neutral-200); }
+
     .table tbody td .close span {
         font-size: 12px;
         color: #dc3545; }
@@ -251,32 +144,4 @@
     .table-responsive-xl > .table-bordered {
       border: 0; } }
 
-@media print {
-  thead {
-    display: table-header-group; }
-  tr,
-  .table {
-    border-collapse: collapse !important; }
-    .table td,
-    .table th {
-      background-color: #fff !important; }
-  .table-bordered th,
-  .table-bordered td {
-    border: 1px solid #dee2e6 !important; }
-  .table-dark {
-    color: inherit; }
-    .table-dark th,
-    .table-dark td,
-    .table-dark thead th,
-    .table-dark tbody + tbody {
-      border-color: #dee2e6; }
-  .table .thead-dark th {
-    color: inherit;
-    border-color: #dee2e6; } }
-
-    table {
-        border-collapse: collapse; }
-
-    th {
-        text-align: inherit; }
   </style>
