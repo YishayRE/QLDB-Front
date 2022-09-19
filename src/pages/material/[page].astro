@@ -45,12 +45,13 @@ const imgs = [
 
       <ModalCMat
         triggerId="qr-trigger"
-        title="Crear"
+        title="QR Generado"
         closeText="Cancel"
       >
         <div id="qr" style="margin: auto;
         width: 50%;
         padding: 10p"/>
+        <a id="qrRef" href="">Ir al sitio</a>
       </ModalCMat>
 
       {
@@ -83,7 +84,7 @@ const imgs = [
             {
               page.data.map((item, index) => {
                 return (
-                <tr slot="tr" class="" role="alert">
+                <tr slot="tr" class="" role="alert" onclick={"obtenerQR(\"" + item._id + "\")"}>
                   <td class="d-flex align-items-center">
                     <div class="img" style=
                     {
@@ -163,25 +164,6 @@ const imgs = [
 </script>
 
 <script is:inline type="text/javascript" src="https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
-<!-- <script is:inline>
-  <script is:inline type="text/javascript" src="http://static.runoob.com/assets/qrcode/qrcode.min.js"></script>
-  
-  const obtenerQR = (id = "") => {
-    const boton = document.getElementById('qr-trigger');
-    const qr = document.getElementById("qr");
-    qr.innerHTML = '';
-
-    var qrcode = new QRCode(qr, {
-            width : 300,
-            height : 300
-        });
-
-    qrcode.makeCode(`http://192.168.100.79:3000/products?id=${id}`);
-    
-    boton.click();
-  }
-</script> -->
-
 <script is:inline>
   const divQr = document.getElementById("qr");
   divQr.innerHTML = "";
@@ -194,13 +176,13 @@ const imgs = [
         height: 300,
         type: "svg",
         data: `http://192.168.100.79:3000/products?id=${id}`,
-        image: "https://res.cloudinary.com/nodecafe/image/upload/v1661527854/Dashboard/wundertec-logo-2_hry1os.png",
+        image: "https://res.cloudinary.com/nodecafe/image/upload/v1663610000/Dashboard/btrh6itbz41zn31lslsw.png",
         dotsOptions: {
-            color: "#424542",
+            color: "#33383D",
             type: "rounded"
         },
         backgroundOptions: {
-            color: "#e9ebee",
+            color: "#ffffff",
         },
         imageOptions: {
             crossOrigin: "anonymous"
@@ -211,7 +193,8 @@ const imgs = [
     qr.innerHTML = '';
 
     qrCode.append(qr);
-
+    document.getElementById("qrRef").href = `http://192.168.100.79:3000/products?id=${id}`;
+    
     boton.click();
   }
 </script>
