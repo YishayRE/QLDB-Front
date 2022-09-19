@@ -8,14 +8,14 @@ const {
 
 <div class="modal" role="dialog" aria-labelledby={triggerId}>
   <div class="modal__inner">
-    <div class="modal__content">
+    <div class="modal__title">
       <h3 tabindex="-1">
         {title}
       </h3>
-      <slot />
+      <button class="close">&times;</button>
     </div>
-    <div class="modal__close">
-      <button>{closeText}</button>
+    <div class="modal__content">
+      <slot />
     </div>
   </div>
 </div>
@@ -25,7 +25,7 @@ const {
   const body = document.querySelector('body')
   const modal = document.querySelector('.modal')
   const modalId = modal.getAttribute('aria-labelledby')
-  const modalCloseButton = modal.querySelector('.modal__close button')
+  const modalCloseButton = modal.querySelector('.modal__title button')
   const modalTrigger = document.querySelector(`#${modalId}`)
   
   // functions
@@ -58,7 +58,7 @@ const {
   }
 
   const openModal = _ => {
-    const modalTitle = modal.querySelector('h3')
+    const modalTitle = modal.querySelector('.modal__title')
 
     modal.classList.add('show')
     body.classList.add('modal-is-active')
@@ -87,7 +87,7 @@ const {
   modalCloseButton.addEventListener('click', closeModal)
 
   modal.addEventListener('click', event => { 
-    if (!event.target.closest('.modal__content')) {
+    if (!event.target.closest('.modal__inner')) {
       closeModal()
     }
   })
@@ -123,34 +123,45 @@ const {
 
   .modal__inner {
     width: clamp(30ch, 70%, 75ch);
-    color: black;
-    background-color: white;
-    border: 0.5rem solid black;
-    border-radius: 1rem;
+    border: 0.15rem solid black;
+    border-radius: 0.4rem;
     opacity: 0;
     transition: opacity 0.3s ease-in-out;
+  }
+
+  .modal__inner input{
+    background-color: var(--background-input);
+  }
+  
+  .darkmode ::-webkit-calendar-picker-indicator { 
+    filter: invert(1)
+  }
+
+  .modal__title{
+    background-color: var(--background);
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem 2rem 0rem 2rem;
+  }
+
+  .modal__title button{
+    padding: 0;
+    float: right;
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--font-color);
+    text-shadow: 0 1px 0 #fff;
+    opacity: .5;
+    border: none;
   }
 
   .modal__content {
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
-    padding: 2rem;
+    padding: 0rem 2rem 2rem 2rem;
+    background-color: var(--background);
   }
 
-  .modal__close button {
-    width: 100%;
-    border: none;
-    background-color: lightgrey;
-    border-bottom-left-radius: 0.4rem;
-    border-bottom-right-radius: 0.4rem;
-    text-align: right;
-    transition: background-color 0.15s ease-in-out;
-
-    &:hover,
-    &:focus {
-      background-color: grey;
-      text-decoration: underline;
-    }
-  }
 </style>

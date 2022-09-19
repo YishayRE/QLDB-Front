@@ -1,7 +1,7 @@
 ---
 import DefaultLayout from '../../layouts/DefaultLayout.astro';
 import Card from '../../components/accessible-astro-components/Card.astro';
-import Modal from '../../components/accessible-astro-components/ModalG.astro';
+import ModalCMat from '../../components/accessible-astro-components/ModalCMat.astro';
 import Pagination from '../../components/accessible-astro-components/Pagination.astro';
 import Table from '../../components/Table.astro';
 import MaterialForm from '../../components/MaterialForm.astro';
@@ -32,23 +32,33 @@ const imgs = [
   <section class="margin-32">
     <div class="space-content">
       <button id="modal-trigger" class="button color-secondary">Agregar nuevo</button>
+      <button id="qr-trigger" class="button color-secondary invisible">QR</button>
       <button id="content-trigger" class="button color-success">Cambiar a tabla</button>
 
-      <Modal
+      <ModalCMat
         triggerId="modal-trigger"
         title="Crear nuevo material"
         closeText="Cancel"
       >
         <MaterialForm />
-      </Modal>
+      </ModalCMat>
+
+      <ModalCMat
+        triggerId="qr-trigger"
+        title="Crear"
+        closeText="Cancel"
+      >
+        <div id="qr" style="margin: auto;
+        width: 50%;
+        padding: 10p"/>
+      </ModalCMat>
 
       {
           <div class="grid small-grid-1 medium-grid-2 large-grid-3 equal-height" style="display: none;" id="content">
             {
-              page.data.map((item, index) => {
+              page.data.map((item) => {
                 return (
                   <Card
-                    url={"#"}
                     img={item.Nombre == 'Agave' ? imgs[0] : imgs[1]}
                     title={item.Nombre}
                     subtitle={item.Lote}
@@ -150,4 +160,58 @@ const imgs = [
 
     button.blur();
   });
+</script>
+
+<script is:inline type="text/javascript" src="https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
+<!-- <script is:inline>
+  <script is:inline type="text/javascript" src="http://static.runoob.com/assets/qrcode/qrcode.min.js"></script>
+  
+  const obtenerQR = (id = "") => {
+    const boton = document.getElementById('qr-trigger');
+    const qr = document.getElementById("qr");
+    qr.innerHTML = '';
+
+    var qrcode = new QRCode(qr, {
+            width : 300,
+            height : 300
+        });
+
+    qrcode.makeCode(`http://192.168.100.79:3000/products?id=${id}`);
+    
+    boton.click();
+  }
+</script> -->
+
+<script is:inline>
+  const divQr = document.getElementById("qr");
+  divQr.innerHTML = "";
+  
+  const obtenerQR = (id = "") => {
+    const boton = document.getElementById('qr-trigger');
+
+    const qrCode = new QRCodeStyling({
+        width: 300,
+        height: 300,
+        type: "svg",
+        data: `http://192.168.100.79:3000/products?id=${id}`,
+        image: "https://res.cloudinary.com/nodecafe/image/upload/v1661527854/Dashboard/wundertec-logo-2_hry1os.png",
+        dotsOptions: {
+            color: "#424542",
+            type: "rounded"
+        },
+        backgroundOptions: {
+            color: "#e9ebee",
+        },
+        imageOptions: {
+            crossOrigin: "anonymous"
+        }
+    });
+
+    const qr = document.getElementById("qr");
+    qr.innerHTML = '';
+
+    qrCode.append(qr);
+
+    boton.click();
+  }
 </script>

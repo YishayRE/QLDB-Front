@@ -26,3 +26,28 @@ import { Modal } from 'accessible-astro-components'
     </div>
   </section>
 </DefaultLayout>
+
+<script>
+  const params = window.location.search;
+
+  const id = params.split('=');
+
+  const myHeaders = new Headers();
+  myHeaders.append("id", "6xA70FLxH8L8Cfly5uTrQT");
+  myHeaders.append("Access-Control-Allow-Origin", "*");
+  myHeaders.append("Access-Control-Allow-Credentials", "true");
+  myHeaders.append("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  myHeaders.append("Vary", "Origin");
+  myHeaders.append("Host", "http://192.168.100.79:3000/");
+
+  const requestOptions = {
+    method: 'GET',
+    headers: myHeaders,
+    redirect: 'follow'
+  };
+
+  const resp = await fetch("http://localhost:8080/api/materiales/historico/", requestOptions);
+  const respuesta = await resp.json();
+  
+  console.log(respuesta);
+</script>
