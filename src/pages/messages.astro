@@ -10,19 +10,77 @@ import { Modal } from 'accessible-astro-components'
     <p class="size-20">Lorem ipsum dolor sit amet.</p>
   </section>
   <section class="margin-32">
-    <div class="space-content">
-      <h2>Messages overview</h2>
-      <EmpyState>
-        You haven't added any messages yet. Start by adding some.
-      </EmpyState>
-      <button id="modal-trigger" class="button color-secondary">Add your first message</button>
-      <Modal
-        triggerId="modal-trigger"
-        title="Add message"
-        closeText="Cancel"
-      >
-        <p>You can use this component to include a form that adds a new message to the list.</p>
-      </Modal>
+    <div id="chartdiv">
     </div>
   </section>
 </DefaultLayout>
+
+<script is:inline src="https://cdn.amcharts.com/lib/4/core.js"></script>
+<script is:inline src="https://cdn.amcharts.com/lib/4/charts.js"></script>
+<script is:inline src="https://cdn.amcharts.com/lib/4/plugins/forceDirected.js"></script>
+<script is:inline>
+  var chart = am4core.create("chartdiv", am4plugins_forceDirected.ForceDirectedTree);
+  // Create series
+  var series = chart.series.push(new am4plugins_forceDirected.ForceDirectedSeries())
+
+  // Set data
+  series.data = [{
+    "name": "Materiales",
+    "valorPropio": "GGGG",
+    "value": 1,
+    "children": [
+      {
+        "name": "Agave", 
+        "valorPropio": "EEEE",
+        "value": 0.75,
+        "collapsed": false,
+        "children": [
+          {
+            "name": "Lote",
+            "value": 0.5,
+            "valorPropio": "AAAA"
+          },
+          {
+            "name": "Fecha de Recoleccón",
+            "value": 0.5,
+            "valorPropio": "BBBB"
+          },
+          {
+            "name": "Cantidad",
+            "value": 0.5,
+            "valorPropio": "CCCC"
+          },
+          {
+            "name": "Origen",
+            "value": 0.5,
+            "valorPropio": "DDDD"
+          }
+        ]
+      }, {
+        "name": "Botella",
+        "value": 0.75,
+        "valorPropio": "FFFF"
+      }
+    ]
+  }];
+
+  // Set up data fields
+  series.dataFields.value = "value";
+  series.dataFields.name = "name";
+  series.dataFields.children = "children";
+
+  // Add labels
+  series.nodes.template.label.text = "{name}";
+  series.nodes.template.tooltipText = "{valorPropio}";
+  series.fontSize = 16;
+  series.maxRadius = 100;
+  series.minRadius = 30;
+  series.links.template.strokeWidth = 5;
+</script>
+
+
+<style>
+  #chartdiv{
+    height: 50vh;
+  }
+</style>

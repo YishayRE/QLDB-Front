@@ -1,78 +1,26 @@
 ---
 import DefaultLayout from '../../layouts/DefaultLayout.astro';
 import Card from '../../components/accessible-astro-components/Card.astro';
-import Modal from '../../components/accessible-astro-components/Modal.astro';
+import Modal from '../../components/accessible-astro-components/ModalG.astro';
 import Pagination from '../../components/accessible-astro-components/Pagination.astro';
 import Table from '../../components/Table.astro';
+import MaterialForm from '../../components/MaterialForm.astro';
 
 export async function getStaticPaths({ paginate }) {
-  const array = [
-    {
-      url: "/link-to-my-post",
-      img: "http://t1.gstatic.com/licensed-image?q=tbn:ANd9GcT_bkAj3p5IFFoID3Ur7GuhZIbPjYHTykIb0am_oGun--e_Q40B41OPYoWIWgg5rUdrl8ZoytBvs_8faqfdrUA",
-      title: "Lorena",
-      footer: "Tony Stark"
-    },
-    {
-      url: "/link-to-my-post",
-      img: "http://t1.gstatic.com/licensed-image?q=tbn:ANd9GcT_bkAj3p5IFFoID3Ur7GuhZIbPjYHTykIb0am_oGun--e_Q40B41OPYoWIWgg5rUdrl8ZoytBvs_8faqfdrUA",
-      title: "Lorena",
-      footer: "Tony Stark"
-    },
-    {
-      url: "/link-to-my-post",
-      img: "http://t1.gstatic.com/licensed-image?q=tbn:ANd9GcT_bkAj3p5IFFoID3Ur7GuhZIbPjYHTykIb0am_oGun--e_Q40B41OPYoWIWgg5rUdrl8ZoytBvs_8faqfdrUA",
-      title: "Lorena",
-      footer: "Tony Stark"
-    },
-    {
-      url: "/link-to-my-post",
-      img: "http://t1.gstatic.com/licensed-image?q=tbn:ANd9GcT_bkAj3p5IFFoID3Ur7GuhZIbPjYHTykIb0am_oGun--e_Q40B41OPYoWIWgg5rUdrl8ZoytBvs_8faqfdrUA",
-      title: "Lorena",
-      footer: "Tony Stark"
-    },
-    {
-      url: "/link-to-my-post",
-      img: "http://t1.gstatic.com/licensed-image?q=tbn:ANd9GcT_bkAj3p5IFFoID3Ur7GuhZIbPjYHTykIb0am_oGun--e_Q40B41OPYoWIWgg5rUdrl8ZoytBvs_8faqfdrUA",
-      title: "Lorena",
-      footer: "Tony Stark"
-    },
-    {
-      url: "/link-to-my-post",
-      img: "http://t1.gstatic.com/licensed-image?q=tbn:ANd9GcT_bkAj3p5IFFoID3Ur7GuhZIbPjYHTykIb0am_oGun--e_Q40B41OPYoWIWgg5rUdrl8ZoytBvs_8faqfdrUA",
-      title: "Lorena",
-      footer: "Tony Stark"
-    },
-    {
-      url: "/link-to-my-post",
-      img: "http://t1.gstatic.com/licensed-image?q=tbn:ANd9GcT_bkAj3p5IFFoID3Ur7GuhZIbPjYHTykIb0am_oGun--e_Q40B41OPYoWIWgg5rUdrl8ZoytBvs_8faqfdrUA",
-      title: "Lorena",
-      footer: "Tony Stark"
-    },
-    {
-      url: "/link-to-my-post",
-      img: "http://t1.gstatic.com/licensed-image?q=tbn:ANd9GcT_bkAj3p5IFFoID3Ur7GuhZIbPjYHTykIb0am_oGun--e_Q40B41OPYoWIWgg5rUdrl8ZoytBvs_8faqfdrUA",
-      title: "Lorena",
-      footer: "Tony Stark"
-    },
-    {
-      url: "/link-to-my-post",
-      img: "http://t1.gstatic.com/licensed-image?q=tbn:ANd9GcT_bkAj3p5IFFoID3Ur7GuhZIbPjYHTykIb0am_oGun--e_Q40B41OPYoWIWgg5rUdrl8ZoytBvs_8faqfdrUA",
-      title: "Lorena",
-      footer: "Tony Stark"
-    },
-    {
-      url: "/link-to-my-post",
-      img: "http://t1.gstatic.com/licensed-image?q=tbn:ANd9GcT_bkAj3p5IFFoID3Ur7GuhZIbPjYHTykIb0am_oGun--e_Q40B41OPYoWIWgg5rUdrl8ZoytBvs_8faqfdrUA",
-      title: "Lorena",
-      footer: "Tony Stark"
-    }
-  ];
-  return paginate(array, { pageSize: 6 });
+
+  const response = await fetch(`http://localhost:8080/api/materiales/`);
+  const result = await response.json();
+  const materiales = result.respuesta;
+
+  return paginate(materiales, { pageSize: 2 });
 }
 
 const { page } = Astro.props;
-const visible = false;
+
+const imgs = [
+  'https://res.cloudinary.com/nodecafe/image/upload/v1663260183/Dashboard/agave_v4xbus.jpg',
+  'https://res.cloudinary.com/nodecafe/image/upload/v1663260183/Dashboard/tequila_zmzwmo.jpg'
+];
 ---
 
 <DefaultLayout title="Media">
@@ -84,40 +32,43 @@ const visible = false;
   <section class="margin-32">
     <div class="space-content">
       <button id="modal-trigger" class="button color-secondary">Agregar nuevo</button>
-      <button id="content-trigger" class="button color-success">Ver en tabla</button>
+      <button id="content-trigger" class="button color-success">Cambiar a tabla</button>
 
       <Modal
         triggerId="modal-trigger"
-        title="Add media"
+        title="Crear nuevo material"
         closeText="Cancel"
       >
-        <p>You can use this component to include a form that adds a new media item to the list.</p>
-        <img src="http://t1.gstatic.com/licensed-image?q=tbn:ANd9GcT_bkAj3p5IFFoID3Ur7GuhZIbPjYHTykIb0am_oGun--e_Q40B41OPYoWIWgg5rUdrl8ZoytBvs_8faqfdrUA" alt="Holi" srcset="">
+        <MaterialForm />
       </Modal>
 
       {
-        visible 
-          ? <div class="grid small-grid-1 medium-grid-2 large-grid-3 equal-height" id="content">
+          <div class="grid small-grid-1 medium-grid-2 large-grid-3 equal-height" style="display: none;" id="content">
             {
               page.data.map((item, index) => {
                 return (
                   <Card
-                    url={item.url}
-                    img={item.img}
-                    title={item.title}
-                    footer={item.footer}
+                    url={"#"}
+                    img={item.Nombre == 'Agave' ? imgs[0] : imgs[1]}
+                    title={item.Nombre}
+                    subtitle={item.Lote}
+                    footer={item._id}
+                    text={item.FechaRecoleccion, item.Cantidad, item.Origen}
                   >
-                    Lorem
+                    <p>Fecha de recolección: {item.FechaRecoleccion}</p>
+                    <p>Lugar de origen: {item.Origen}</p>
+                    <p>Cantidad: {item.Cantidad}</p>
                   </Card>
                 );
               })
             }
           </div>
-          : <Table>
+          
+          <Table>
+            <th slot="th">Identificador</th>
             <th slot="th">Nombre</th>
-            <th slot="th">Fecha de recolección</th>
             <th slot="th">Cantidad</th>
-            <th slot="th">Origen</th>
+            <th slot="th">Procedencia</th>
 
             {
               page.data.map((item, index) => {
@@ -126,22 +77,22 @@ const visible = false;
                   <td class="d-flex align-items-center">
                     <div class="img" style=
                     {
-                      "background-image: url(" + item.img + ");"
+                      "background-image: url(" + (item.Nombre == 'Agave' ? imgs[0] : imgs[1]) + ");"
                     }
                     ></div>
                     <div class="pl-3 email">
-                        <span>{item.title}</span>
-                        <span>Added: 01/03/2020</span>
+                        <span>{item.Lote}</span>
+                        <span>{item._id}</span>
                     </div>
                   </td>
+                  <td>{item.Nombre}</td>
+                  <td class="status"><span class="active">{item.Cantidad}</span></td>
                   <td class="align-items-center">
-                      <div class="pl-3">
-                          <span>{item.url}</span>
-                          <span>Added: 01/03/2020</span>
+                      <div class="pl-3 email">
+                          <span>{item.Origen}</span>
+                          <span>{item.FechaRecoleccion}</span>
                       </div>
                   </td>
-                  <td>{item.footer}</td>
-                  <td class="status"><span class="active">Active</span></td>
                 </tr>
                 );
               })
@@ -172,10 +123,31 @@ const visible = false;
 
 <script>
   const button = document.getElementById('content-trigger');
+  const content = localStorage.getItem('content');
+
+  if(content == 'table') {
+    button.textContent = 'Cambiar a tarjetas';
+    document.querySelector('table').style.display = 'table';
+  } else {
+    button.textContent = 'Cambiar a tabla';
+    document.getElementById('content').style.display = 'grid';
+  }
 
   button.addEventListener('click', () => {
-    const content = document.querySelector('#content');
-    content.classList.toggle('hidden');
+    console.log(button.textContent.trim());
+
+    if(button.textContent.trim() == 'Cambiar a tabla') {
+      localStorage.setItem('content', 'table');
+      button.textContent = 'Cambiar a tarjetas';
+      document.getElementById('content').style.display = 'none';
+      document.querySelector('table').style.display = 'table';
+    } else {
+      localStorage.setItem('content', 'grid');
+      button.textContent = 'Cambiar a tabla';
+      document.getElementById('content').style.display = 'grid';
+      document.querySelector('table').style.display = 'none';
+    }
+
     button.blur();
   });
 </script>

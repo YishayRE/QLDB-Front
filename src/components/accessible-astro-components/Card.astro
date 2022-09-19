@@ -2,9 +2,12 @@
 const { 
   url = '#', 
   img = 'https://fakeimg.pl/640x360', 
-  title = 'Default title', 
-  footer = 'Your name'
+  title = 'Default title',
+  subtitle = "Default subtitle" ,
+  footer = 'Your name',
+  text = "Default text"
 } = Astro.props
+
 ---
 
 <div class="card">
@@ -15,6 +18,9 @@ const {
     <h3>
       <a href={url}>{title}</a>
     </h3>
+    <h5>
+      {subtitle}
+    </h5>
     <p>
       <slot>Default description.</slot>
     </p>

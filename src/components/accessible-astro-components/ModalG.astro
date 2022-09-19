@@ -9,12 +9,10 @@ const {
 <div class="modal" role="dialog" aria-labelledby={triggerId}>
   <div class="modal__inner">
     <div class="modal__content">
-      <div>
-        <h5 tabindex="-1">
-          {title}
-        </h5>
-      </div>
-      <slot>Modal description.</slot>
+      <h3 tabindex="-1">
+        {title}
+      </h3>
+      <slot />
     </div>
     <div class="modal__close">
       <button>{closeText}</button>
@@ -107,7 +105,7 @@ const {
     position: fixed;
     visibility: hidden;
     z-index: -10;
-
+    overflow-y: inherit;
     &.show {
       display: grid;
       place-items: center;
@@ -127,7 +125,7 @@ const {
     width: clamp(30ch, 70%, 75ch);
     color: black;
     background-color: white;
-    border: 2px solid black;
+    border: 0.5rem solid black;
     border-radius: 1rem;
     opacity: 0;
     transition: opacity 0.3s ease-in-out;
@@ -136,16 +134,16 @@ const {
   .modal__content {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;    
-    padding: 1rem;
+    gap: 0.75rem;
+    padding: 2rem;
   }
 
   .modal__close button {
     width: 100%;
     border: none;
     background-color: lightgrey;
-    border-bottom-left-radius: 1rem;
-    border-bottom-right-radius: 1rem;
+    border-bottom-left-radius: 0.4rem;
+    border-bottom-right-radius: 0.4rem;
     text-align: right;
     transition: background-color 0.15s ease-in-out;
 

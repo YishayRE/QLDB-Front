@@ -1,7 +1,7 @@
 ---
 ---
 
-<table class="table table-responsive-xl">
+<table class="table table-responsive-xl" style="display: none;">
     <thead>
       <tr>
         <slot name="th"/>
@@ -13,6 +13,9 @@
   </table>
 
 <style is:global>
+    .invisible{
+        display: none !important;
+    }
 
     tr th:nth-child(1){
         width:fit-content;
@@ -27,7 +30,7 @@
     }
 
     tr th:nth-child(4){
-        width: fit-content;
+        width: 30%;
     }
 
     .alert {
@@ -63,12 +66,23 @@
     .table {
         min-width: 1000px !important;
         width: 100%;
-        -webkit-box-shadow: 0px 5px 12px -12px rgba(0, 0, 0, 0.29);
-        -moz-box-shadow: 0px 5px 12px -12px rgba(0, 0, 0, 0.29); }
+        border-radius: 0.5rem;
+        box-shadow: 7px 5px 10px rgba(0,0,0,0.29);
+        -webkit-box-shadow: 7px 5px 10px rgba(0,0,0,0.29);
+        -moz-box-shadow: 7px 5px 10px rgba(0,0,0,0.29); }
+
+    .darkmode .table {
+        min-width: 1000px !important;
+        width: 100%;
+        box-shadow: 5px 3px 10px rgba(255,255,255,0.29);
+        -webkit-box-shadow: 5px 3px 10px rgba(255,255,255,0.29);
+        -moz-box-shadow: 5px 3px 10px rgba(255,255,255,0.29); }
 
     .table {
         width: 100%;
-        margin-bottom: 1rem;}
+        margin-bottom: 1rem;
+        overflow-x: scroll;
+    }
 
     .table thead tr {
         vertical-align: bottom;
