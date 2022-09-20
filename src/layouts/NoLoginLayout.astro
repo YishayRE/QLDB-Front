@@ -43,42 +43,16 @@ const url = Astro.url;
     </div>
     <div class="admin-interface">
       <Navigation>
-        <!--
-        <li class="menu-item">
-          <a href="/">
-            <Icon pack="majesticons" name="home-line" /> 
-            <span class="sr-only">Dashboard</span>
-          </a>
-        </li>
-        -->
-        <li class="menu-item">
-          <a href="/material/1">
-            <Icon pack="mdi" name="tractor" /> 
-            <span class="sr-only">Materiales</span>
-          </a>
-        </li>
-        <!--
-
-        <li class="menu-item">
-          <a href="/products/">
-            <Icon pack="majesticons" name="shopping-cart-line" /> 
-            <span class="sr-only">Products</span>
-          </a>
-        </li>
-        <li class="menu-item">
-          <a href="/users/">
-            <Icon pack="majesticons" name="users-line" /> 
-            <span class="sr-only">Users</span>
-          </a>
-        </li>
-        -->
-
-        <li class="menu-item">
-          <a href="/messages/">
-            <Icon pack="majesticons" name="messages-line" /> 
-            <span class="sr-only">Messages</span>
-          </a>
-        </li>
+        {
+          (url.pathname == '/historico') 
+            ? <li class="menu-item">
+              <a href="/historico">
+                <Icon pack="mdi" name="clipboard-text-clock-outline" /> 
+                <span class="sr-only">Users</span>
+              </a>
+            </li>
+            : ''
+        }
       </Navigation>    
       <main id="main-content">
         <slot />
@@ -86,14 +60,6 @@ const url = Astro.url;
     </div>
   </body>
 </html>
-
-<script>
-  let isLoggedIn = localStorage.getItem('isLoggedIn');
-
-  if (isLoggedIn === null) {
-    window.location.href = '/login'
-  }
-</script>
 
 <style lang="scss">
   @use '../assets/scss/base/breakpoint' as *;
