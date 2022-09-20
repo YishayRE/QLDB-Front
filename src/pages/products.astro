@@ -33,12 +33,12 @@ import { Modal } from 'accessible-astro-components'
   const id = params.split('=');
 
   const myHeaders = new Headers();
-  myHeaders.append("id", "6xA70FLxH8L8Cfly5uTrQT");
+  myHeaders.append("id", id[1]);
   myHeaders.append("Access-Control-Allow-Origin", "*");
   myHeaders.append("Access-Control-Allow-Credentials", "true");
   myHeaders.append("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   myHeaders.append("Vary", "Origin");
-  myHeaders.append("Host", "http://192.168.100.79:3000/");
+  myHeaders.append("Host", "http://localhost:3000/");
 
   const requestOptions = {
     method: 'GET',

@@ -1,0 +1,169 @@
+---
+import DefaultLayout from '../layouts/DefaultLayout.astro'
+import EmpyState from '../components/EmpyState.astro'
+import { Modal } from 'accessible-astro-components'
+---
+
+<DefaultLayout title="Messages">
+  <section>
+    <h1>Historico de Materiales</h1><br>
+    <p class="size-20">Muestra de los cambios en el material F1WQ3Idumg05KV2JbXzcEC.</p>
+  </section>
+  <section class="margin-32">
+    <div id="chartdiv">
+    </div>
+  </section>
+</DefaultLayout>
+
+<script is:inline src="https://cdn.amcharts.com/lib/4/core.js"></script>
+<script is:inline src="https://cdn.amcharts.com/lib/4/charts.js"></script>
+<script is:inline src="https://cdn.amcharts.com/lib/4/plugins/forceDirected.js"></script>
+<script>
+  const params = window.location.search;
+
+  const id = params.split('=');
+
+  const myHeaders = new Headers();
+  myHeaders.append("id", id[1]);
+  myHeaders.append("Access-Control-Allow-Origin", "*");
+  myHeaders.append("Access-Control-Allow-Credentials", "true");
+  myHeaders.append("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  myHeaders.append("Vary", "Origin");
+  myHeaders.append("Host", "http://localhost:3000/");
+
+  const requestOptions = {
+    method: 'GET',
+    headers: myHeaders,
+    redirect: 'follow'
+  };
+
+  const resp = await fetch("http://localhost:8080/api/materiales/historico/", requestOptions);
+  const respuesta = await resp.json();
+
+  const json = respuesta.respuesta;
+  console.log(json);
+
+  var chart = am4core.create("chartdiv", am4plugins_forceDirected.ForceDirectedTree);
+  // Create series
+  var series = chart.series.push(new am4plugins_forceDirected.ForceDirectedSeries())
+
+  // Set data
+  if(json.length === 2)
+    series.data = [{
+      "name": json[0].data.Nombre,
+      "valorPropio": json[0].metadata.id,
+      "value": 1,
+      "children": [
+        {
+          "name": "Primer", 
+          "valorPropio": json[0].data.Lote,
+          "value": 0.75,
+          "collapsed": false,
+          "children": [
+            {
+              "name": "Nombre",
+              "value": 0.5,
+              "valorPropio": json[0].data.Nombre
+            },
+            {
+              "name": "Fecha de Recolección",
+              "value": 0.5,
+              "valorPropio": json[0].data.FechaRecoleccion
+            },
+            {
+              "name": "Cantidad",
+              "value": 0.5,
+              "valorPropio": json[0].data.Cantidad
+            },
+            {
+              "name": "Origen",
+              "value": 0.5,
+              "valorPropio": json[0].data.Origen
+            }
+          ]
+        }, {
+          "name": "Segundo", 
+          "valorPropio": json[1].data.Lote,
+          "value": 0.75,
+          "collapsed": false,
+          "children": [
+            {
+              "name": "Nombre",
+              "value": 0.5,
+              "valorPropio": json[1].data.Nombre
+            },
+            {
+              "name": "Fecha de Recolección",
+              "value": 0.5,
+              "valorPropio": json[1].data.FechaRecoleccion
+            },
+            {
+              "name": "Cantidad",
+              "value": 0.5,
+              "valorPropio": json[1].data.Cantidad
+            },
+            {
+              "name": "Origen",
+              "value": 0.5,
+              "valorPropio": json[1].data.Origen
+            }
+          ]
+        }
+      ]
+    }];
+  else
+  series.data = [{
+      "name": json[0].data.Nombre,
+      "valorPropio": json[0].metadata.id,
+      "value": 1,
+      "children": [
+        {
+          "name": "Primer", 
+          "valorPropio": json[0].data.Lote,
+          "value": 0.75,
+          "collapsed": false,
+          "children": [
+            {
+              "name": "Nombre",
+              "value": 0.5,
+              "valorPropio": json[0].data.Nombre
+            },
+            {
+              "name": "Fecha de Recolección",
+              "value": 0.5,
+              "valorPropio": json[0].data.FechaRecoleccion
+            },
+            {
+              "name": "Cantidad",
+              "value": 0.5,
+              "valorPropio": json[0].data.Cantidad
+            },
+            {
+              "name": "Origen",
+              "value": 0.5,
+              "valorPropio": json[0].data.Origen
+            }
+          ]
+        }
+      ]
+    }];
+
+  // Set up data fields
+  series.dataFields.value = "value";
+  series.dataFields.name = "name";
+  series.dataFields.children = "children";
+
+  // Add labels
+  series.nodes.template.label.text = "{name}";
+  series.nodes.template.tooltipText = "{valorPropio}";
+  series.fontSize = 16;
+  series.maxRadius = 60;
+  series.minRadius = 20;
+  series.links.template.strokeWidth = 5;
+</script>
+
+<style>
+  #chartdiv{
+    height: 50vh;
+  }
+</style>
