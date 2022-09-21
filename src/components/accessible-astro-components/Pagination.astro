@@ -11,12 +11,12 @@ const {
 <nav class="pagination" aria-label="Pagination">
   <ul class="pagination__list">
     <li>
-      <a href={focus} id="pastPage" aria-label="Previous page">
+      <a href={focus} id="pastPage" aria-label="Previous page" style="display: none;">
         <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14 7-5 5 5 5"/></svg>
       </a>
     </li>
     <li>
-      <span>Página {currentPage} de {totalPages}</span>
+      <span>Página <span id="current-page">{currentPage}</span> de <span id="total-pages">{totalPages}</span></span>
     </li>
     <li>
       <a href={focus} id="nextPage" aria-label="Next page">
@@ -27,14 +27,24 @@ const {
 </nav>
 
 <script>
+  let page = 1;
+
+  const pastPage = document.getElementById('pastPage')
+  const nextPage = document.getElementById('nextPage')
+  const currentPage = document.getElementById('current-page');
+  const totalPages = document.getElementById('total-pages');
+
   const imgs = [
     'https://res.cloudinary.com/nodecafe/image/upload/v1663260183/Dashboard/agave_v4xbus.jpg',
     'https://res.cloudinary.com/nodecafe/image/upload/v1663260183/Dashboard/tequila_zmzwmo.jpg'
   ];
 
-  const dibujarT = (array) => {
+  const dibujarT = (array, page) => {
     let html = ''
-    array.forEach(data => {
+    const inicio = (page - 1) * 6;
+    const fin = page * 6
+    const arrayF = array.slice(inicio, fin);
+    arrayF.forEach(data => {
       html += `
       <tr slot="tr" class="" role="alert" onclick=obtenerQR("${data._id}")>
         <td class="d-flex align-items-center">
@@ -61,9 +71,12 @@ const {
     tabla.innerHTML = html;
   }
 
-  const dibujarC = (array) => {
+  const dibujarC = (array, page) => {
     let html = ''
-    array.forEach(data => {
+    const inicio = (page - 1) * 6;
+    const fin = page * 6
+    const arrayF = array.slice(inicio, fin);
+    arrayF.forEach(data => {
       html += `
         <div class="card" onclick=obtenerQR("${data._id}")>
           <div class="card__image">
@@ -77,7 +90,9 @@ const {
               ${data.Lote}
             </h5>
             <p>
-              <slot>Default description.</slot>
+              <p>${data.Cantidad}</p>
+              <p>${data.Origen}</p>
+              <p>${data.FechaRecoleccion}</p>
             </p>
             <small>
               ${data._id}
@@ -106,16 +121,51 @@ const {
     redirect: 'follow'
   };
 
-  const resp = await fetch("http://localhost:8080/api/materiales/", requestOptions);
+  const resp = await fetch(`${import.meta.env.PUBLIC_API_URL}/materiales/`, requestOptions);
   const respuesta = await resp.json();
 
   const json = respuesta.respuesta;
   console.log(json);
+  let total = Math.ceil(json.length / 6);
+  
+  totalPages.innerHTML = total.toString();
+  currentPage.innerHTML = page.toString();
 
-  dibujarT(json);
+  dibujarT(json, page);
+  dibujarC(json, page);
+  
+  if(page >= total){
+    nextPage.style.display = "none";
+  }
+  
+  if(total == 1){
+    pastPage.style.display = "none";
+    nextPage.style.display = "none";
+  }
 
-  const pastPage = document.getElementById('pastPage')
-  const nextPage = document.getElementById('nextPage')
+  pastPage.addEventListener("click", () => {
+    page--
+    dibujarT(json, page);
+    dibujarC(json, page);
+    currentPage.innerHTML = page.toString();
+    pastPage.style.display = "block";
+    nextPage.style.display = "block";
+    if(page <= 1){
+      pastPage.style.display = "none"; 
+    }
+  })
+
+  nextPage.addEventListener("click", () => {
+    page++
+    dibujarT(json, page);
+    dibujarC(json, page);
+    currentPage.innerHTML = page.toString();
+    pastPage.style.display = "block";
+    nextPage.style.display = "block";
+    if(page >= total){
+      nextPage.style.display = "none";
+    }
+  })
 </script>
 
 <style lang="scss" is:global>

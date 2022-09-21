@@ -35,19 +35,21 @@ import MaterialForm from '../../components/MaterialForm.astro';
         <div id="qr" style="margin: auto;
         width: 50%;
         padding: 10p"/>
-        <a id="qrRef" href="">Ir al sitio</a>
+        <a id="qrRef" href="" style="margin: auto; font-size: 1.5rem; font-weight: 200;">Ir al sitio</a>
       </ModalCMat>
 
       {
           <div class="grid small-grid-1 medium-grid-2 large-grid-3 equal-height" style="display: none;" id="content">
           </div>
           
-          <Table>
-            <th slot="th">Identificador</th>
-            <th slot="th">Nombre</th>
-            <th slot="th">Cantidad</th>
-            <th slot="th">Procedencia</th>
-          </Table>
+          <div id="div-tabla">
+            <Table>
+              <th slot="th">Identificador</th>
+              <th slot="th">Nombre</th>
+              <th slot="th">Cantidad</th>
+              <th slot="th">Procedencia</th>
+            </Table>
+          </div>
       }
 
     </div>
@@ -68,6 +70,11 @@ import MaterialForm from '../../components/MaterialForm.astro';
     width: 100%;
     max-height: 250px;
     object-fit: cover;
+  }
+
+  #div-tabla{
+    width: 100%;
+    overflow-y: scroll;
   }
 </style>
 
@@ -108,30 +115,34 @@ import MaterialForm from '../../components/MaterialForm.astro';
   divQr.innerHTML = "";
   
   const obtenerQR = (id = "") => {
+    
     const boton = document.getElementById('qr-trigger');
-
-    const qrCode = new QRCodeStyling({
-        width: 300,
-        height: 300,
-        type: "svg",
-        data: `http://localhost:3000/historico?id=${id}`,
-        image: "https://res.cloudinary.com/nodecafe/image/upload/v1663610000/Dashboard/btrh6itbz41zn31lslsw.png",
-        dotsOptions: {
-            color: "#33383D",
-            type: "rounded"
-        },
-        backgroundOptions: {
-            color: "#ffffff",
-        },
-        imageOptions: {
-            crossOrigin: "anonymous"
-        }
-    });
-
+    
     const qr = document.getElementById("qr");
     qr.innerHTML = '';
 
-    qrCode.append(qr);
+    if (!navigator.userAgent.match(/Android/i) && !navigator.userAgent.match(/iPhone/i)) {
+      const qrCode = new QRCodeStyling({
+          width: 300,
+          height: 300,
+          type: "svg",
+          data: `http://localhost:3000/historico?id=${id}`,
+          image: "https://res.cloudinary.com/nodecafe/image/upload/v1663610000/Dashboard/btrh6itbz41zn31lslsw.png",
+          dotsOptions: {
+              color: "#33383D",
+              type: "rounded"
+          },
+          backgroundOptions: {
+              color: "#ffffff",
+          },
+          imageOptions: {
+              crossOrigin: "anonymous"
+          }
+      });
+
+      qrCode.append(qr);
+    }
+
     document.getElementById("qrRef").href = `http://localhost:3000/historico?id=${id}`;
     
     boton.click();
