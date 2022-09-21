@@ -3,6 +3,7 @@ import '../assets/scss/globals.scss'
 import Navigation from '../components/Navigation.astro'
 import DarkMode from '../components/accessible-astro-components/DarkMode.astro';
 import SkipLinks from '../components/accessible-astro-components/SkipLinks.astro';
+import Loader from '../components/Loader.astro';
 import { Icon } from 'astro-icon'
 
 const {title} = Astro.props
@@ -34,7 +35,8 @@ const url = Astro.url;
     <!-- page title -->
     <title>{title} - {subtitle}</title>
   </head>
-  <body>
+  <body onload="myFunction()" style="margin:0;">
+    <Loader />
     <header>
       <SkipLinks />
     </header>
@@ -92,6 +94,18 @@ const url = Astro.url;
 
   if (isLoggedIn === null) {
     window.location.href = '/login'
+  }
+</script>
+
+<script is:inline>
+  var myVar;
+
+  function myFunction() {
+    myVar = setTimeout(showPage, 3000);
+  }
+
+  function showPage() {
+    document.getElementById("divLoader").style.display = "none";
   }
 </script>
 

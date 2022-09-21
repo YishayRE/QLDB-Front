@@ -7,14 +7,21 @@
         <slot name="th"/>
       </tr>
     </thead>
-    <tbody>
-        <slot name="tr" />
+    <tbody id="tabla">
     </tbody>
   </table>
 
 <style is:global>
     .invisible{
         display: none !important;
+    }
+
+    .agave{
+        background-image: url('https://res.cloudinary.com/nodecafe/image/upload/v1663260183/Dashboard/agave_v4xbus.jpg');
+    }
+
+    .botella{
+        background-image: url('https://res.cloudinary.com/nodecafe/image/upload/v1663260183/Dashboard/tequila_zmzwmo.jpg');
     }
 
     tr th:nth-child(1){

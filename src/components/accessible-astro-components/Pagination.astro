@@ -3,14 +3,15 @@ const {
   previousPage = '#',
   nextPage = '#',
   currentPage = '1',
-  totalPages = '12'
+  totalPages = '12',
+  focus = '#'
 } = Astro.props
 ---
 
 <nav class="pagination" aria-label="Pagination">
   <ul class="pagination__list">
     <li>
-      <a href={previousPage} aria-label="Previous page">
+      <a href={focus} id="pastPage" aria-label="Previous page">
         <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14 7-5 5 5 5"/></svg>
       </a>
     </li>
@@ -18,12 +19,104 @@ const {
       <span>Página {currentPage} de {totalPages}</span>
     </li>
     <li>
-      <a href={nextPage} aria-label="Next page">
+      <a href={focus} id="nextPage" aria-label="Next page">
         <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m10 7 5 5-5 5"/></svg>
       </a>
     </li>
   </ul>
 </nav>
+
+<script>
+  const imgs = [
+    'https://res.cloudinary.com/nodecafe/image/upload/v1663260183/Dashboard/agave_v4xbus.jpg',
+    'https://res.cloudinary.com/nodecafe/image/upload/v1663260183/Dashboard/tequila_zmzwmo.jpg'
+  ];
+
+  const dibujarT = (array) => {
+    let html = ''
+    array.forEach(data => {
+      html += `
+      <tr slot="tr" class="" role="alert" onclick=obtenerQR("${data._id}")>
+        <td class="d-flex align-items-center">
+          <div class="img ${(data.Nombre == 'Agave') ? 'agave' : 'botella'}"></div>
+          <div class="pl-3 email">
+              <span>${data.Lote}</span>
+              <span>${data._id}</span>
+          </div>
+        </td>
+        <td>${data.Nombre}</td>
+        <td class="status"><span class="active">${data.Cantidad}</span></td>
+        <td class="align-items-center">
+            <div class="pl-3 email">
+                <span>${data.Origen}</span>
+                <span>${data.FechaRecoleccion}</span>
+            </div>
+        </td>
+      </tr>
+      `;
+    });
+
+    const tabla = document.querySelector('#tabla');
+    
+    tabla.innerHTML = html;
+  }
+
+  const dibujarC = (array) => {
+    let html = ''
+    array.forEach(data => {
+      html += `
+        <div class="card" onclick=obtenerQR("${data._id}")>
+          <div class="card__image">
+            <img src=${(data.Nombre == 'Agave') ? imgs[0] : imgs[1]} alt="">
+          </div>
+          <div class="card__content">
+            <h3>
+              <a>${data.Nombre}</a>
+            </h3>
+            <h5>
+              ${data.Lote}
+            </h5>
+            <p>
+              <slot>Default description.</slot>
+            </p>
+            <small>
+              ${data._id}
+            </small>
+          </div>
+        </div>
+      `;
+    });
+
+    const content = document.querySelector('#content');
+    
+    content.innerHTML = html;
+    
+  }
+
+  const myHeaders = new Headers();
+  myHeaders.append("Access-Control-Allow-Origin", "*");
+  myHeaders.append("Access-Control-Allow-Credentials", "true");
+  myHeaders.append("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  myHeaders.append("Vary", "Origin");
+  myHeaders.append("Host", "http://localhost:3000/");
+
+  const requestOptions = {
+    method: 'GET',
+    headers: myHeaders,
+    redirect: 'follow'
+  };
+
+  const resp = await fetch("http://localhost:8080/api/materiales/", requestOptions);
+  const respuesta = await resp.json();
+
+  const json = respuesta.respuesta;
+  console.log(json);
+
+  dibujarT(json);
+
+  const pastPage = document.getElementById('pastPage')
+  const nextPage = document.getElementById('nextPage')
+</script>
 
 <style lang="scss" is:global>
   .pagination {
