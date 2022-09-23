@@ -35,7 +35,7 @@ import NoLoginLayout from '../layouts/NoLoginLayout.astro'
     redirect: 'follow'
   };
 
-  const resp = await fetch("http://192.168.15.22:8080/api/materiales/historico/", requestOptions);
+  const resp = await fetch("http://192.168.100.4:8080/api/materiales/historico/", requestOptions);
   const respuesta = await resp.json();
 
   const json = respuesta.respuesta;
@@ -150,6 +150,9 @@ import NoLoginLayout from '../layouts/NoLoginLayout.astro'
   series.dataFields.value = "value";
   series.dataFields.name = "name";
   series.dataFields.children = "children";
+  series.dataFields.fixed = "fixed";
+  series.nodes.template.propertyFields.x = "x";
+  series.nodes.template.propertyFields.y = "y";
 
   // Add labels
   series.nodes.template.label.text = "{valorPropio}";

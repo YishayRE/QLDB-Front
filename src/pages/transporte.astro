@@ -1,0 +1,64 @@
+---
+import DefaultLayout from '../layouts/DefaultLayout.astro';
+import ModalCMat from '../components/accessible-astro-components/ModalCMat.astro';
+import Pagination from '../components/accessible-astro-components/Pagination.astro';
+import Table from '../components/Table.astro';
+import MaterialForm from '../components/MaterialForm.astro';
+
+---
+<DefaultLayout title="Material">
+    <section>
+      <h1 id="titulo">Materiales</h1><br>
+      <p class="size-20">Muestra de los materiales enviados.</p>
+    </section>
+    
+    <section class="margin-32">
+      <div class="space-content">
+        <button id="modal-trigger" class="button color-secondary">Agregar nuevo</button>
+        <button id="qr-trigger" class="button color-secondary invisible">QR</button>
+        <button id="content-trigger" class="button color-success">Cambiar a tabla</button>
+  
+        <ModalCMat
+          triggerId="modal-trigger"
+          title="Crear nuevo material"
+          closeText="Cancel"
+        >
+          <MaterialForm />
+        </ModalCMat>
+  
+        <ModalCMat
+          triggerId="qr-trigger"
+          title="QR Generado"
+          closeText="Cancel"
+        >
+          <div id="qr" style="margin: auto;
+          width: 50%;
+          padding: 10p"/>
+          <a id="qrRef" href="" style="margin: auto; font-size: 1.5rem; font-weight: 200;">Ir al sitio</a>
+        </ModalCMat>
+  
+        {
+            <div class="grid small-grid-1 medium-grid-2 large-grid-3 equal-height" style="display: none;" id="content"></div>
+            
+            <div id="div-tabla">
+              <Table>
+                <th slot="th">Identificador</th>
+                <th slot="th">Nombre</th>
+                <th slot="th">Cantidad</th>
+                <th slot="th">Procedencia</th>
+              </Table>
+            </div>
+        }
+  
+      </div>
+      <div class="grid align-horizontal margin-32">
+        <Pagination 
+          focus={'#titulo'}
+          nextPage={'#'}
+          totalPages={'#'}
+          currentPage={'#'}
+        />
+      </div>
+    </section>
+    <div id="cardEditable"></div>
+  </DefaultLayout>

@@ -168,6 +168,17 @@ const {
   })
 </script>
 
+<script is:inline>
+  let tabla = document.getElementById("tabla");
+  let cards = document.getElementById("content");
+
+  let stateCheck = setInterval(() => {
+    if (tabla.hasChildNodes() || cards.hasChildNodes()) {
+      clearInterval(stateCheck);
+      hideLoader();
+    }
+  }, 100);
+</script>
 <style lang="scss" is:global>
   .pagination {
     .pagination__list {

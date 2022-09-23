@@ -35,7 +35,7 @@ const url = Astro.url;
     <!-- page title -->
     <title>{title} - {subtitle}</title>
   </head>
-  <body onload="myFunction()" style="margin:0;">
+  <body>
     <Loader />
     <header>
       <SkipLinks />
@@ -98,14 +98,18 @@ const url = Astro.url;
 </script>
 
 <script is:inline>
-  var myVar;
+  window.addEventListener("load", function(event) {
+    hideLoader();
+  });
 
-  function myFunction() {
-    myVar = setTimeout(showPage, 3000);
+  let hideLoader = () => {
+    document.getElementById("divLoader").style.opacity = "0";
+    document.getElementById("divLoader").style.visibility = "hidden";
   }
 
-  function showPage() {
-    document.getElementById("divLoader").style.display = "none";
+  let showLoader = () => {
+    document.getElementById("divLoader").style.opacity = "1";
+    document.getElementById("divLoader").style.visibility = "visible";
   }
 </script>
 
