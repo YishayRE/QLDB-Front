@@ -38,7 +38,7 @@ import { Modal } from 'accessible-astro-components'
   myHeaders.append("Access-Control-Allow-Credentials", "true");
   myHeaders.append("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   myHeaders.append("Vary", "Origin");
-  myHeaders.append("Host", "http://localhost:3000/");
+  myHeaders.append("Host", `${import.meta.env.PUBLIC_URL}`);
 
   const requestOptions = {
     method: 'GET',
@@ -46,10 +46,8 @@ import { Modal } from 'accessible-astro-components'
     redirect: 'follow'
   };
 
-  const resp = await fetch("http://localhost:8080/api/materiales/historico/", requestOptions);
+  const resp = await fetch(`${import.meta.env.PUBLIC_API_URL}/materiales/historico/`, requestOptions);
   const respuesta = await resp.json();
-  
-  
 
   console.log(respuesta);
 </script>

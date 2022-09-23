@@ -8,7 +8,7 @@ import NoLoginLayout from '../layouts/NoLoginLayout.astro'
     <p class="size-20">Muestra de los cambios en el material F1WQ3Idumg05KV2JbXzcEC.</p>
   </section>
   <section class="margin-32">
-    <div id="chartdiv">
+    <div id="chartdiv" style="width: 100%;">
     </div>
   </section>
 </NoLoginLayout>
@@ -27,7 +27,7 @@ import NoLoginLayout from '../layouts/NoLoginLayout.astro'
   myHeaders.append("Access-Control-Allow-Credentials", "true");
   myHeaders.append("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   myHeaders.append("Vary", "Origin");
-  myHeaders.append("Host", "http://localhost:3000/");
+  myHeaders.append("Host", `${import.meta.env.PUBLIC_URL}`);
 
   const requestOptions = {
     method: 'GET',
@@ -35,132 +35,74 @@ import NoLoginLayout from '../layouts/NoLoginLayout.astro'
     redirect: 'follow'
   };
 
-  const resp = await fetch("http://192.168.100.4:8080/api/materiales/historico/", requestOptions);
+  const resp = await fetch(`${import.meta.env.PUBLIC_API_URL}/materiales/historico/`, requestOptions);
   const respuesta = await resp.json();
 
   const json = respuesta.respuesta;
   console.log(json);
 
-  var chart = am4core.create("chartdiv", am4plugins_forceDirected.ForceDirectedTree);
+  const chart = am4core.create("chartdiv", am4plugins_forceDirected.ForceDirectedTree);
   // Create series
-  var series = chart.series.push(new am4plugins_forceDirected.ForceDirectedSeries())
+  let series = chart.series.push(new am4plugins_forceDirected.ForceDirectedSeries())
+
+  const jsonChildrens = json.map(jsonU => {
+    return [
+      {
+        "name": "Nombre",
+        "value": 0.5,
+        "valorPropio": jsonU.data.Nombre
+      },
+      {
+        "name": "Fecha de Recolección",
+        "value": 0.5,
+        "valorPropio": jsonU.data.FechaRecoleccion
+      },
+      {
+        "name": "Cantidad",
+        "value": 0.5,
+        "valorPropio": jsonU.data.Cantidad
+      },
+      {
+        "name": "Origen",
+        "value": 0.5,
+        "valorPropio": jsonU.data.Origen
+      }
+    ]
+  });
+
+  const json2 = jsonChildrens.map((jsonU, index) => {
+    return {
+          "name": `Versión ${json[index].metadata.version}`, 
+          "valorPropio": json[index].data.Lote,
+          "value": 0.75,
+          "collapsed": false,
+          "children": jsonChildrens[index]
+        }
+  });
 
   // Set data
-  if(json.length === 2)
-    series.data = [{
-      "name": json[0].data.Nombre,
-      "valorPropio": json[0].metadata.id,
-      "value": 1,
-      "children": [
-        {
-          "name": `Versión ${json[0].metadata.version}`, 
-          "valorPropio": json[0].data.Lote,
-          "value": 0.75,
-          "collapsed": false,
-          "children": [
-            {
-              "name": "Nombre",
-              "value": 0.5,
-              "valorPropio": json[0].data.Nombre
-            },
-            {
-              "name": "Fecha de Recolección",
-              "value": 0.5,
-              "valorPropio": json[0].data.FechaRecoleccion
-            },
-            {
-              "name": "Cantidad",
-              "value": 0.5,
-              "valorPropio": json[0].data.Cantidad
-            },
-            {
-              "name": "Origen",
-              "value": 0.5,
-              "valorPropio": json[0].data.Origen
-            }
-          ]
-        }, {
-          "name": `Versión ${json[1].metadata.version}`, 
-          "valorPropio": json[1].data.Lote,
-          "value": 0.75,
-          "collapsed": false,
-          "children": [
-            {
-              "name": "Nombre",
-              "value": 0.5,
-              "valorPropio": json[1].data.Nombre
-            },
-            {
-              "name": "Fecha de Recolección",
-              "value": 0.5,
-              "valorPropio": json[1].data.FechaRecoleccion
-            },
-            {
-              "name": "Cantidad",
-              "value": 0.5,
-              "valorPropio": json[1].data.Cantidad
-            },
-            {
-              "name": "Origen",
-              "value": 0.5,
-              "valorPropio": json[1].data.Origen
-            }
-          ]
-        }
-      ]
-    }];
-  else
   series.data = [{
-      "name": json[0].data.Nombre,
-      "valorPropio": json[0].metadata.id,
-      "value": 1,
-      "children": [
-        {
-          "name": "Primer", 
-          "valorPropio": json[0].data.Lote,
-          "value": 0.75,
-          "collapsed": false,
-          "children": [
-            {
-              "name": "Nombre",
-              "value": 0.5,
-              "valorPropio": json[0].data.Nombre
-            },
-            {
-              "name": "Fecha de Recolección",
-              "value": 0.5,
-              "valorPropio": json[0].data.FechaRecoleccion
-            },
-            {
-              "name": "Cantidad",
-              "value": 0.5,
-              "valorPropio": json[0].data.Cantidad
-            },
-            {
-              "name": "Origen",
-              "value": 0.5,
-              "valorPropio": json[0].data.Origen
-            }
-          ]
-        }
-      ]
-    }];
+    "name": json[0].data.Nombre,
+    "valorPropio": json[0].metadata.id,
+    "value": 1,
+    "children": json2
+  }];
 
   // Set up data fields
   series.dataFields.value = "value";
   series.dataFields.name = "name";
   series.dataFields.children = "children";
-  series.dataFields.fixed = "fixed";
-  series.nodes.template.propertyFields.x = "x";
-  series.nodes.template.propertyFields.y = "y";
 
   // Add labels
   series.nodes.template.label.text = "{valorPropio}";
-  series.nodes.template.tooltipText = "{name}";
+  series.nodes.template.tooltipText = "{name}: {valorPropio}";
+  series.nodes.template.label.truncate = true;
   series.fontSize = 16;
   series.maxRadius = 60;
   series.minRadius = 20;
   series.links.template.strokeWidth = 5;
+
+  hideLoader();
 </script>
 
 <style>

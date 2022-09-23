@@ -1,4 +1,6 @@
 ---
+import Card from './Card.astro';
+
 const {
   previousPage = '#',
   nextPage = '#',
@@ -113,7 +115,7 @@ const {
   myHeaders.append("Access-Control-Allow-Credentials", "true");
   myHeaders.append("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   myHeaders.append("Vary", "Origin");
-  myHeaders.append("Host", "http://localhost:3000/");
+  myHeaders.append("Host", `${import.meta.env.PUBLIC_URL}`);
 
   const requestOptions = {
     method: 'GET',
@@ -126,7 +128,7 @@ const {
 
   const json = respuesta.respuesta;
   hideLoader();
-  console.log(json);
+
   let total = Math.ceil(json.length / 6);
   
   totalPages.innerHTML = total.toString();
@@ -180,6 +182,7 @@ const {
     }
   }, 100);
 </script>
+
 <style lang="scss" is:global>
   .pagination {
     .pagination__list {

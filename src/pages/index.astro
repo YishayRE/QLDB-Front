@@ -42,4 +42,6 @@ import DashboardWidget from '../components/DashboardWidget.astro';
 <script>
   const date = new Date()
   document.querySelector('#current-time').innerHTML = `<em>${date.toDateString()}</em>`
+
+  hideLoader();
 </script>

@@ -10,7 +10,6 @@ const {title} = Astro.props
 let subtitle = 'Accessible Astro Dashboard'
 const url = Astro.url;
 ---
-
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
@@ -94,18 +93,6 @@ const url = Astro.url;
 
   if (isLoggedIn === null) {
     window.location.href = '/login'
-  }
-</script>
-
-<script is:inline>
-  let hideLoader = () => {
-    document.getElementById("divLoader").style.opacity = "0";
-    document.getElementById("divLoader").style.visibility = "hidden";
-  }
-
-  let showLoader = () => {
-    document.getElementById("divLoader").style.opacity = "1";
-    document.getElementById("divLoader").style.visibility = "visible";
   }
 </script>
 
