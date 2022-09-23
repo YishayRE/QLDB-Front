@@ -125,6 +125,7 @@ const {
   const respuesta = await resp.json();
 
   const json = respuesta.respuesta;
+  hideLoader();
   console.log(json);
   let total = Math.ceil(json.length / 6);
   

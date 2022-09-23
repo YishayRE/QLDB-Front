@@ -54,7 +54,7 @@ const url = Astro.url;
         </li>
         -->
         <li class="menu-item">
-          <a href="/material/1">
+          <a href="/material/page">
             <Icon pack="mdi" name="tractor" /> 
             <span class="sr-only">Materiales</span>
           </a>
@@ -98,10 +98,6 @@ const url = Astro.url;
 </script>
 
 <script is:inline>
-  window.addEventListener("load", function(event) {
-    hideLoader();
-  });
-
   let hideLoader = () => {
     document.getElementById("divLoader").style.opacity = "0";
     document.getElementById("divLoader").style.visibility = "hidden";
