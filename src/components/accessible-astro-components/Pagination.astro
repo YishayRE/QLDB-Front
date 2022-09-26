@@ -210,33 +210,33 @@ const {
       dibujarT = (array, page) => {
         let html = ''
         const inicio = (page - 1) * 6;
-        const fin = page * 6
+        const fin = page * 6;
         const arrayF = array.slice(inicio, fin);
 
         arrayF.forEach(data => {
           html += `
-          <tr slot="tr" class="" role="alert" onclick=obtenerQR("${data.id}")>
-            <td class="d-flex align-items-center">
-              <div class="img ${(data.Nombre == 'Agave') ? 'trans-agave' :'trans-botella'}"></div>
-              <div class="pl-3 email">
-                  <span>${data.idTransporte}</span>
-                  <span>${data.id}</span>
-              </div>
-            </td>
-            <td class="status"><span class="${(data.fechaFin) ? 'active' : 'waiting'}">${data.Nombre}</span></td>
-            <td class="align-items-center">
-              <div class="pl-3 email">
-                    <span>${data.origen}</span>
-                    <span>${new Date(data.fechaInicio).toLocaleString()}</span>
-                </div>
-            </td>
-            <td class="align-items-center">
+            <tr slot="tr" class="" role="alert" onclick=obtenerQR("${data.id}")>
+              <td class="d-flex align-items-center">
+                <div class="img ${(data.Nombre == 'Agave') ? 'trans-agave' :'trans-botella'}"></div>
                 <div class="pl-3 email">
-                    <span>${data.destino}</span>
-                    <span>${(data.fechaFin) ? new Date(data.fechaFin).toLocaleString() : 'Sin fecha final'}</span>
+                    <span>${data.idTransporte}</span>
+                    <span>${data.id}</span>
                 </div>
-            </td>
-          </tr>
+              </td>
+              <td class="status"><span class="${(data.fechaFin) ? 'active' : 'waiting'}">${data.Nombre}</span></td>
+              <td class="align-items-center">
+                <div class="pl-3 email">
+                      <span>${data.origen}</span>
+                      <span>${new Date(data.fechaInicio).toLocaleString()}</span>
+                  </div>
+              </td>
+              <td class="align-items-center">
+                  <div class="pl-3 email">
+                      <span>${data.destino}</span>
+                      <span>${(data.fechaFin) ? new Date(data.fechaFin).toLocaleString() : 'Sin fecha final'}</span>
+                  </div>
+              </td>
+            </tr>
           `;
         });
         const tabla = document.querySelector('#tabla');

@@ -73,17 +73,14 @@ import NoLoginLayout from '../layouts/NoLoginLayout.astro'
   for (const name in material.data)
     if (Object.hasOwnProperty.call(material.data, name))
       namesM.push(name);
-  console.log(namesM);
 
   for (const name in transporte.data)
     if (Object.hasOwnProperty.call(transporte.data, name))
       namesT.push(name);
-  console.log(namesT);
 
   for (const name in produccion.data)
     if (Object.hasOwnProperty.call(produccion.data, name))
       namesP.push(name);
-  console.log(namesP);
 
   const chart = am4core.create("chartdiv", am4plugins_forceDirected.ForceDirectedTree);
   // Create series
@@ -91,13 +88,16 @@ import NoLoginLayout from '../layouts/NoLoginLayout.astro'
   let series = chart.series.push(new am4plugins_forceDirected.ForceDirectedSeries())
 
   const tran = namesT.map(name => {
-    return {
-      "name": name,
-      "collapsed": true,
-      "value": 0.5,
-      "valorPropio": transporte.data[name],
-    }
-  });
+    if(name == '_idMaterial')
+      return;
+    else
+      return {
+        "name": name,
+        "collapsed": true,
+        "value": 0.5,
+        "valorPropio": transporte.data[name],
+      }
+  }).filter(item => item);
 
   const prod = namesP.map(name => {
     return {
@@ -108,12 +108,19 @@ import NoLoginLayout from '../layouts/NoLoginLayout.astro'
     }
   });
 
+  const bloqueT = {
+    "name": 'bloque',
+    "valorPropio": transporte.metadata.id,
+    "collapsed": true,
+    "value": 0.5,
+  };
+
   const transporteC = {
     "name": 'Nombre',
     "valorPropio": 'Transporte',
     "collapsed": true,
     "value": 0.75,
-    "children": tran
+    "children": [...tran, bloqueT]
   }
 
   const produccionC = {
