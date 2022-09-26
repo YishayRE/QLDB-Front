@@ -3,62 +3,147 @@ import DefaultLayout from '../layouts/DefaultLayout.astro';
 import ModalCMat from '../components/accessible-astro-components/ModalCMat.astro';
 import Pagination from '../components/accessible-astro-components/Pagination.astro';
 import Table from '../components/Table.astro';
-import MaterialForm from '../components/MaterialForm.astro';
-
+import TransporteForm from '../components/TransporteForm.astro';
 ---
-<DefaultLayout title="Material">
-    <section>
-      <h1 id="titulo">Materiales</h1><br>
-      <p class="size-20">Muestra de los materiales enviados.</p>
-    </section>
+
+<DefaultLayout title="Transportes">
+  <section>
+    <h1 id="titulo">Transportes</h1><br>
+    <p class="size-20">Muestra de los transportes de materiales.</p>
+  </section>
+  
+  <section class="margin-32">
+    <div class="space-content">
+      <button id="modal-trigger" class="button color-secondary">Agregar nuevo</button>
+      <button id="qr-trigger" class="button color-secondary invisible">QR</button>
+      <button id="content-trigger" class="button color-success">Cambiar a tabla</button>
+
+      <ModalCMat
+        triggerId="modal-trigger"
+        title="Crear nuevo viaje"
+        closeText="Cancel"
+      >
+        <TransporteForm />
+      </ModalCMat>
+
+      <ModalCMat
+        triggerId="qr-trigger"
+        title="QR Generado"
+        closeText="Cancel"
+      >
+        <div id="qr" style="margin: auto;
+        width: 50%;
+        padding: 10px"/>
+        <a id="qrRef" href="" style="margin: auto; font-size: 1.5rem; font-weight: 200;">Ir al sitio</a>
+      </ModalCMat>
+
+      {
+          <div class="grid small-grid-1 medium-grid-2 large-grid-3 equal-height" style="display: none;" id="content"></div>
+          
+          <div id="div-tabla">
+            <Table>
+              <th slot="th">Identificador</th>
+              <th slot="th">Material</th>
+              <th slot="th">Inicio</th>
+              <th slot="th">Final</th>
+            </Table>
+          </div>
+      }
+
+    </div>
+    <div class="grid align-horizontal margin-32">
+      <Pagination 
+        focus={'#titulo'}
+        nextPage={'#'}
+        totalPages={'#'}
+        currentPage={'#'}
+      />
+    </div>
+  </section>
+  <div id="cardEditable"></div>
+</DefaultLayout>
+
+<script type="text/javascript" src="https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
+<script is:inline>
+  const baseApi = (window.location.hostname.includes('localhost')) ?
+    'http://localhost:8080/api' :
+    'https://dashboard-wundertec.herokuapp.com/api';
+
+  const baseURL = (window.location.hostname.includes('localhost')) ?
+    'http://localhost:3000' :
+    'https://dashboard-4267b.web.app';
+
+  const obtenerQR = (id = "") => {
+    const boton = document.getElementById('qr-trigger');
     
-    <section class="margin-32">
-      <div class="space-content">
-        <button id="modal-trigger" class="button color-secondary">Agregar nuevo</button>
-        <button id="qr-trigger" class="button color-secondary invisible">QR</button>
-        <button id="content-trigger" class="button color-success">Cambiar a tabla</button>
-  
-        <ModalCMat
-          triggerId="modal-trigger"
-          title="Crear nuevo material"
-          closeText="Cancel"
-        >
-          <MaterialForm />
-        </ModalCMat>
-  
-        <ModalCMat
-          triggerId="qr-trigger"
-          title="QR Generado"
-          closeText="Cancel"
-        >
-          <div id="qr" style="margin: auto;
-          width: 50%;
-          padding: 10p"/>
-          <a id="qrRef" href="" style="margin: auto; font-size: 1.5rem; font-weight: 200;">Ir al sitio</a>
-        </ModalCMat>
-  
-        {
-            <div class="grid small-grid-1 medium-grid-2 large-grid-3 equal-height" style="display: none;" id="content"></div>
-            
-            <div id="div-tabla">
-              <Table>
-                <th slot="th">Identificador</th>
-                <th slot="th">Nombre</th>
-                <th slot="th">Cantidad</th>
-                <th slot="th">Procedencia</th>
-              </Table>
-            </div>
-        }
-  
-      </div>
-      <div class="grid align-horizontal margin-32">
-        <Pagination 
-          focus={'#titulo'}
-          nextPage={'#'}
-          totalPages={'#'}
-          currentPage={'#'}
-        />
-      </div>
-    </section>
-    <div id="cardEditable"></div>
-  </DefaultLayout>
+    const qr = document.getElementById("qr");
+    qr.innerHTML = '';
+
+    if (!navigator.userAgent.match(/Android/i) && !navigator.userAgent.match(/iPhone/i)) {
+      const qrCode = new QRCodeStyling({
+          width: 300,
+          height: 300,
+          type: "svg",
+          data: `${baseURL}/historico?id=${id}&tipo=transporte`,
+          image: "https://res.cloudinary.com/nodecafe/image/upload/v1663610000/Dashboard/btrh6itbz41zn31lslsw.png",
+          dotsOptions: {
+              color: "#33383D",
+              type: "rounded"
+          },
+          backgroundOptions: {
+              color: "#ffffff",
+          },
+          imageOptions: {
+              crossOrigin: "anonymous"
+          }
+      });
+
+      qrCode.append(qr);
+    }
+
+    document.getElementById("qrRef").href = `${baseURL}/historico?id=${id}&tipo=transporte`;
+    
+    boton.click();
+  };
+</script>
+
+<script>
+  const button = document.getElementById('content-trigger');
+  const content = localStorage.getItem('content');
+
+  if(content == 'table') {
+    button.textContent = 'Cambiar a tarjetas';
+    document.querySelector('table').style.display = 'table';
+  } else {
+    button.textContent = 'Cambiar a tabla';
+    document.getElementById('content').style.display = 'grid';
+  }
+
+  button.addEventListener('click', () => {
+    if(button.textContent.trim() == 'Cambiar a tabla') {
+      localStorage.setItem('content', 'table');
+      button.textContent = 'Cambiar a tarjetas';
+      document.getElementById('content').style.display = 'none';
+      document.querySelector('table').style.display = 'table';
+    } else {
+      localStorage.setItem('content', 'grid');
+      button.textContent = 'Cambiar a tabla';
+      document.getElementById('content').style.display = 'grid';
+      document.querySelector('table').style.display = 'none';
+    }
+
+    button.blur();
+  });
+</script>
+
+<style lang="scss" is:global>
+  .media {
+    width: 100%;
+    max-height: 250px;
+    object-fit: cover;
+  }
+
+  #div-tabla{
+    width: 100%;
+  }
+</style>

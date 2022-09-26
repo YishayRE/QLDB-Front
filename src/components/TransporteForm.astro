@@ -1,0 +1,114 @@
+---
+import Notification from './accessible-astro-components/Notification.astro';
+import { Icon } from 'astro-icon'
+---
+
+<form class="crear-form space-content" method="post">
+  <Notification type="warning">
+    <Icon pack="majesticons" name="emoji-sad-line" /><p class="size-12">La petición no pudo ser procesada.</p>
+  </Notification>
+  <div class="crear-form__controls">
+    <label for="_idMaterial">Id de Material</label>
+    <input type="text" name="_idMaterial" required>
+  </div>
+  <div class="crear-form__controls">
+    <label for="idTransporte">Id de Transporte</label>
+    <input type="number" name="idTransporte" required>
+  </div>
+  <div class="crear-form__controls">
+    <label for="origen">Origen</label>
+    <input type="text" name="origen" required>
+  </div>
+  <div class="crear-form__controls">
+    <label for="destino">Destino</label>
+    <input type="text" name="destino" required>
+  </div>
+  <div class="crear-form__controls">
+    <label for="fechaInicio">Fecha de inicio</label>
+    <input type="date" name="fechaInicio" required>
+  </div>
+  <div class="crear-form__controls">
+    <label for="fechaFin">Fecha de llegada</label>
+    <input type="date" name="fechaFin" required>
+  </div>
+  <button class="button color-secondary behavior-full" type="submit">Crear</button>
+</form> 
+
+<script>
+  // variables
+  const form = document.querySelector('.crear-form');
+  const notification = form.querySelector('.notification');
+  const loteInput = form.querySelector('input[name="Lote"]');
+  const nombreInput = form.querySelector('input[name="Nombre"]');
+  const fechaInput = form.querySelector('input[name="FechaRecoleccion"]');
+  const cantidadInput = form.querySelector('input[name="Cantidad"]');
+  const estadoInput = form.querySelector('input[name="Estado"]');
+  const municipioInput = form.querySelector('input[name="Municipio"]');
+  const ciuadInput = form.querySelector('input[name="Ciudad"]');
+  const submitButton = form.querySelector('button');
+
+  // execution
+  notification.style.display = 'none';
+
+  submitButton.addEventListener('click', async(event) => {
+    event.preventDefault();
+
+    const object = {
+      Lote: loteInput.value,
+      Nombre: nombreInput.value,
+      FechaRecoleccion: fechaInput.value,
+      Cantidad: cantidadInput.value,
+      Origen: `${estadoInput.value}, ${municipioInput.value}, ${ciuadInput.value}`
+    }
+
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    const raw = JSON.stringify(object);
+
+    const requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: raw,
+      redirect: 'follow'
+    }
+
+    const resp = await fetch(`${import.meta.env.PUBLIC_API_URL}/materiales/`, requestOptions);
+    const data = await resp.json();
+    console.log(data);
+
+    location.reload();
+  });
+</script>
+
+<style lang="scss" is:global>
+  @use '../assets/scss/base/border' as *;
+  @use '../assets/scss/base/space' as *;
+
+  .crear-form {
+    label {
+      display: block;
+      margin-bottom: $space-8;
+    }
+
+    input {
+      width: 100%;
+      @include radius-small;
+    }
+
+    input {
+      padding: $space-8;
+      border: 2px solid var(--neutral-600);
+    }
+
+    .checkbox {
+      display: flex;
+      align-items: center;
+      gap: $space-4;
+
+      input {
+        width: auto;
+      }
+    }
+  }
+</style>

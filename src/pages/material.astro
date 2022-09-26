@@ -84,7 +84,7 @@ import MaterialForm from '../components/MaterialForm.astro';
           width: 300,
           height: 300,
           type: "svg",
-          data: `${baseURL}/historico?id=${id}`,
+          data: `${baseURL}/historico?id=${id}&tipo=material`,
           image: "https://res.cloudinary.com/nodecafe/image/upload/v1663610000/Dashboard/btrh6itbz41zn31lslsw.png",
           dotsOptions: {
               color: "#33383D",
@@ -101,7 +101,7 @@ import MaterialForm from '../components/MaterialForm.astro';
       qrCode.append(qr);
     }
 
-    document.getElementById("qrRef").href = `${baseURL}/historico?id=${id}`;
+    document.getElementById("qrRef").href = `${baseURL}/historico?id=${id}&tipo=material`;
     
     boton.click();
   };
@@ -120,8 +120,6 @@ import MaterialForm from '../components/MaterialForm.astro';
   }
 
   button.addEventListener('click', () => {
-    console.log(button.textContent.trim());
-
     if(button.textContent.trim() == 'Cambiar a tabla') {
       localStorage.setItem('content', 'table');
       button.textContent = 'Cambiar a tarjetas';
@@ -147,6 +145,5 @@ import MaterialForm from '../components/MaterialForm.astro';
 
   #div-tabla{
     width: 100%;
-    overflow-y: scroll;
   }
 </style>

@@ -49,9 +49,9 @@ import NoLoginLayout from '../layouts/NoLoginLayout.astro'
       indicador = 'idProduccion';
       break;
     case 'material':
-      titulo.innerHTML = 'Historico del Material';
-      descripcion.innerHTML = `Muestra de los cambios en el material con bloque ${id}.`;
-      resp = await fetch(`${import.meta.env.PUBLIC_API_URL}/materiales/historico/`, requestOptions);
+      titulo.innerHTML = 'Historia del Material';
+      descripcion.innerHTML = `Muestra el proceso del material con bloque ${id}.`;
+      resp = await fetch(`${import.meta.env.PUBLIC_API_URL}/materiales/historia/`, requestOptions);
       indicador = 'Lote';
       break;
     case 'transporte':
@@ -64,49 +64,99 @@ import NoLoginLayout from '../layouts/NoLoginLayout.astro'
       break;
   }
 
-  const respuesta = await resp.json();
+  const {material, transporte, produccion} = await resp.json();
 
-  const json = respuesta.respuesta;
-  console.log(json);
-  const names = [];
+  const namesM = [];
+  const namesT = [];
+  const namesP = [];
 
-  for (const name in json[json.length - 1].data)
-    if (Object.hasOwnProperty.call(json[json.length - 1].data, name))
-      names.push(name);
-  
+  for (const name in material.data)
+    if (Object.hasOwnProperty.call(material.data, name))
+      namesM.push(name);
+  console.log(namesM);
+
+  for (const name in transporte.data)
+    if (Object.hasOwnProperty.call(transporte.data, name))
+      namesT.push(name);
+  console.log(namesT);
+
+  for (const name in produccion.data)
+    if (Object.hasOwnProperty.call(produccion.data, name))
+      namesP.push(name);
+  console.log(namesP);
+
   const chart = am4core.create("chartdiv", am4plugins_forceDirected.ForceDirectedTree);
   // Create series
 
   let series = chart.series.push(new am4plugins_forceDirected.ForceDirectedSeries())
 
-  const jsonChildrens = json.map(jsonU => {
-    return names.map(name => {
+  const tran = namesT.map(name => {
+    return {
+      "name": name,
+      "collapsed": true,
+      "value": 0.5,
+      "valorPropio": transporte.data[name],
+    }
+  });
+
+  const prod = namesP.map(name => {
+    return {
+      "name": name,
+      "collapsed": true,
+      "value": 0.5,
+      "valorPropio": produccion.data[name],
+    }
+  });
+
+  const transporteC = {
+    "name": 'Nombre',
+    "valorPropio": 'Transporte',
+    "collapsed": true,
+    "value": 0.75,
+    "children": tran
+  }
+
+  const produccionC = {
+    "name": 'Nombre',
+    "valorPropio": 'Produccion',
+    "collapsed": true,
+    "value": 0.75,
+    "children": prod
+  }
+
+  const mat = namesM.map(name => {
+    if(name == '_idProduccion')
+      return {
+        "name": name,
+        "value": 0.5,
+        "collapsed": true,
+        "valorPropio": material.data[name],
+        "children": [produccionC]
+      }
+    else
       return {
         "name": name,
         "collapsed": true,
         "value": 0.5,
-        "valorPropio": jsonU.data[name],
+        "valorPropio": material.data[name],
       }
-    });
   });
 
-  const json2 = jsonChildrens.map((jsonU, index) => {
-    return {
-          "name": `Versión ${json[index].metadata.version}`, 
-          "valorPropio": json[index].data[indicador],
-          "value": 0.75,
-          "collapsed": true,
-          "children": jsonChildrens[index]
-        }
-  });
+  const bloqueM = {
+    "name": 'bloque',
+    "valorPropio": material.metadata.id,
+    "collapsed": true,
+    "value": 0.5,
+    "children": [transporteC]
+  };
 
   // Set data
   series.data = [{
-    "name": 'bloque',
-    "valorPropio": json[0].metadata.id,
+    "name": 'Nombre',
     "collapsed": false,
+    "valorPropio": 'Material',
     "value": 1,
-    "children": json2
+    "children": [...mat, bloqueM]
   }];
 
   // Set up data fields

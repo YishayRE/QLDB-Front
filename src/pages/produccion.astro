@@ -1,16 +1,15 @@
 ---
-import DefaultLayout from '../../layouts/DefaultLayout.astro';
-import Card from '../../components/accessible-astro-components/Card.astro';
-import ModalCMat from '../../components/accessible-astro-components/ModalCMat.astro';
-import Pagination from '../../components/accessible-astro-components/Pagination.astro';
-import Table from '../../components/Table.astro';
-import MaterialForm from '../../components/MaterialForm.astro';
+import DefaultLayout from '../layouts/DefaultLayout.astro';
+import ModalCMat from '../components/accessible-astro-components/ModalCMat.astro';
+import Pagination from '../components/accessible-astro-components/Pagination.astro';
+import Table from '../components/Table.astro';
+import ProduccionForm from '../components/ProduccionForm.astro';
 ---
 
-<DefaultLayout title="Material">
+<DefaultLayout title="Produccion">
   <section>
-    <h1 id="titulo">Materiales</h1><br>
-    <p class="size-20">Muestra de los materiales enviados.</p>
+    <h1 id="titulo">Producción</h1><br>
+    <p class="size-20">Muestra de los producciones enviados.</p>
   </section>
   
   <section class="margin-32">
@@ -21,10 +20,10 @@ import MaterialForm from '../../components/MaterialForm.astro';
 
       <ModalCMat
         triggerId="modal-trigger"
-        title="Crear nuevo material"
+        title="Crear nueva produccion"
         closeText="Cancel"
       >
-        <MaterialForm />
+        <ProduccionForm />
       </ModalCMat>
 
       <ModalCMat
@@ -44,9 +43,9 @@ import MaterialForm from '../../components/MaterialForm.astro';
           <div id="div-tabla">
             <Table>
               <th slot="th">Identificador</th>
-              <th slot="th">Nombre</th>
-              <th slot="th">Cantidad</th>
-              <th slot="th">Procedencia</th>
+              <th slot="th">Lugar de producción</th>
+              <th slot="th">Fecha de inicio</th>
+              <th slot="th">Fecha de salida</th>
             </Table>
           </div>
       }
@@ -64,57 +63,17 @@ import MaterialForm from '../../components/MaterialForm.astro';
   <div id="cardEditable"></div>
 </DefaultLayout>
 
-<style lang="scss" is:global>
-  .media {
-    width: 100%;
-    max-height: 250px;
-    object-fit: cover;
-  }
-
-  #div-tabla{
-    width: 100%;
-    overflow-y: scroll;
-  }
-</style>
-
-<script>
-  const button = document.getElementById('content-trigger');
-  const content = localStorage.getItem('content');
-
-  if(content == 'table') {
-    button.textContent = 'Cambiar a tarjetas';
-    document.querySelector('table').style.display = 'table';
-  } else {
-    button.textContent = 'Cambiar a tabla';
-    document.getElementById('content').style.display = 'grid';
-  }
-
-  button.addEventListener('click', () => {
-    console.log(button.textContent.trim());
-
-    if(button.textContent.trim() == 'Cambiar a tabla') {
-      localStorage.setItem('content', 'table');
-      button.textContent = 'Cambiar a tarjetas';
-      document.getElementById('content').style.display = 'none';
-      document.querySelector('table').style.display = 'table';
-    } else {
-      localStorage.setItem('content', 'grid');
-      button.textContent = 'Cambiar a tabla';
-      document.getElementById('content').style.display = 'grid';
-      document.querySelector('table').style.display = 'none';
-    }
-
-    button.blur();
-  });
-</script>
-
-<script is:inline type="text/javascript" src="https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
+<script type="text/javascript" src="https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
 <script is:inline>
-  const divQr = document.getElementById("qr");
-  divQr.innerHTML = "";
-  
+  const baseApi = (window.location.hostname.includes('localhost')) ?
+    'http://localhost:8080/api' :
+    'https://dashboard-wundertec.herokuapp.com/api';
+
+  const baseURL = (window.location.hostname.includes('localhost')) ?
+    'http://localhost:3000' :
+    'https://dashboard-4267b.web.app';
+
   const obtenerQR = (id = "") => {
-    
     const boton = document.getElementById('qr-trigger');
     
     const qr = document.getElementById("qr");
@@ -125,7 +84,7 @@ import MaterialForm from '../../components/MaterialForm.astro';
           width: 300,
           height: 300,
           type: "svg",
-          data: `${import.meta.env.PUBLIC_URL}/historico?id=${id}`,
+          data: `${baseURL}/historico?id=${id}&tipo=produccion`,
           image: "https://res.cloudinary.com/nodecafe/image/upload/v1663610000/Dashboard/btrh6itbz41zn31lslsw.png",
           dotsOptions: {
               color: "#33383D",
@@ -142,8 +101,49 @@ import MaterialForm from '../../components/MaterialForm.astro';
       qrCode.append(qr);
     }
 
-    document.getElementById("qrRef").href = `${import.meta.env.PUBLIC_URL}/historico?id=${id}`;
+    document.getElementById("qrRef").href = `${baseURL}/historico?id=${id}&tipo=produccion`;
     
     boton.click();
-  }
+  };
 </script>
+
+<script>
+  const button = document.getElementById('content-trigger');
+  const content = localStorage.getItem('content');
+
+  if(content == 'table') {
+    button.textContent = 'Cambiar a tarjetas';
+    document.querySelector('table').style.display = 'table';
+  } else {
+    button.textContent = 'Cambiar a tabla';
+    document.getElementById('content').style.display = 'grid';
+  }
+
+  button.addEventListener('click', () => {
+    if(button.textContent.trim() == 'Cambiar a tabla') {
+      localStorage.setItem('content', 'table');
+      button.textContent = 'Cambiar a tarjetas';
+      document.getElementById('content').style.display = 'none';
+      document.querySelector('table').style.display = 'table';
+    } else {
+      localStorage.setItem('content', 'grid');
+      button.textContent = 'Cambiar a tabla';
+      document.getElementById('content').style.display = 'grid';
+      document.querySelector('table').style.display = 'none';
+    }
+
+    button.blur();
+  });
+</script>
+
+<style lang="scss" is:global>
+  .media {
+    width: 100%;
+    max-height: 250px;
+    object-fit: cover;
+  }
+
+  #div-tabla{
+    width: 100%;
+  }
+</style>
