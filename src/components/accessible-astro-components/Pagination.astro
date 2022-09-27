@@ -281,6 +281,72 @@ const {
       }
       break;  
     default:
+      resp = await fetch(`${import.meta.env.PUBLIC_API_URL}/producciones/`, requestOptions);
+
+      dibujarT = (array, page) => {
+        let html = ''
+        const inicio = (page - 1) * 6;
+        const fin = page * 6
+        const arrayF = array.slice(inicio, fin);
+        
+        arrayF.forEach(data => {
+          console.log(data.idProduccion);
+          html += `
+          <tr slot="tr" class="" role="alert" onclick=obtenerQR("${data._id}")>
+            <td class="d-flex align-items-center">
+              <div class="img botella"></div>
+              <div class="pl-3 email">
+                  <span>Id de producción: ${data.idProduccion}</span>
+                  <span>${data._id}</span>
+              </div>
+            </td>
+            <td>${data.lugarProduccion}</td>
+            <td class="status"><span class="active">${new Date(data.fechaInicio).toLocaleString()}</span></td>
+            <td class="status"><span class="${(data.fechaFIn) ? 'active' : 'waiting'}">${(data.fechaFIn) ? new Date(data.fechaFIn).toLocaleString() : 'Sin fecha final'}</span></td>
+          </tr>
+          `;
+        });
+
+        const tabla = document.querySelector('#tabla');
+        
+        tabla.innerHTML = html;
+      }
+
+      dibujarC = (array, page) => {
+        let html = ''
+        const inicio = (page - 1) * 6;
+        const fin = page * 6
+        const arrayF = array.slice(inicio, fin);
+
+        arrayF.forEach(data => {
+          html += `
+            <div class="card" onclick=obtenerQR("${data._id}")>
+              <div class="card__image">
+                <img src=${imgs[1]} alt="">
+              </div>
+              <div class="card__content">
+                <h3>
+                  <a>Id de producción ${data.idProduccion}</a>
+                </h3>
+                <h5>
+                  ${data.lugarProduccion}
+                </h5>
+                <p>
+                  <p>${new Date(data.fechaInicio).toLocaleString()}</p>
+                  <p>${(data.fechaFIn) ? new Date(data.fechaFIn).toLocaleString() : 'Sin fecha final'}</p>
+                </p>
+                <small>
+                  ${data._id}
+                </small>
+              </div>
+            </div>
+          `;
+        });
+
+        const content = document.querySelector('#content');
+        
+        content.innerHTML = html;
+      }
       break;
   }
 

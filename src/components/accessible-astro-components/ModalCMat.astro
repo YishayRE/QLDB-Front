@@ -2,7 +2,8 @@
 const {
   triggerId,
   title,
-  closeText = 'Close'
+  closeText = 'Close',
+  modalSize = '75vmin'
 } = Astro.props
 ---
 
@@ -95,7 +96,7 @@ const {
   window.closeModal = closeModal
 </script>
 
-<style lang="scss" is:global>
+<style lang="scss" is:global define:vars={{modalSize}}>
   body.modal-is-active > *:not(.modal) {
     filter: blur(6px);
   }
@@ -122,7 +123,7 @@ const {
   }
 
   .modal__inner {
-    width: clamp(30ch, 70%, 75ch);
+    width: var(--modalSize);
     border: 0.15rem solid black;
     border-radius: 0.4rem;
     opacity: 0;

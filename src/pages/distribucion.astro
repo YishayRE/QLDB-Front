@@ -3,13 +3,13 @@ import DefaultLayout from '../layouts/DefaultLayout.astro';
 import ModalCMat from '../components/accessible-astro-components/ModalCMat.astro';
 import Pagination from '../components/accessible-astro-components/Pagination.astro';
 import Table from '../components/Table.astro';
-import MaterialForm from '../components/MaterialForm.astro';
+import DistribucionForm from '../components/DistribucionForm.astro';
 ---
 
-<DefaultLayout title="Material">
+<DefaultLayout title="Distribucion">
   <section>
-    <h1 id="titulo">Materiales</h1><br>
-    <p class="size-20">Muestra de los materiales enviados.</p>
+    <h1 id="titulo">Distribuciones</h1><br>
+    <p class="size-20">Muestra de los distribuciones enviados.</p>
   </section>
   
   <section class="margin-32">
@@ -20,26 +20,21 @@ import MaterialForm from '../components/MaterialForm.astro';
 
       <ModalCMat
         triggerId="modal-trigger"
-        title="Crear nuevo material"
+        title="Crear nuevo distribucion"
         closeText="Cancel"
       >
-        <MaterialForm />
+        <DistribucionForm />
       </ModalCMat>
 
       <ModalCMat
         triggerId="qr-trigger"
         title="QR Generado"
         closeText="Cancel"
-        modalSize="100vmin"
       >
-        <div class="grid small-grid-1 medium-grid-2">
-          <div id="qr-historico" style="margin: auto;
-          padding-top: 10px;"/>
-          <div id="qr-camino" style="margin: auto;
-          padding-top: 10px;"/>
-          <a id="qrRef-historico" href="" style="margin: auto; font-size: 1.5rem; font-weight: 200;">Ver historico</a>
-          <a id="qrRef-camino" href="" style="margin: auto; font-size: 1.5rem; font-weight: 200;">Ver camino</a>
-        </div>
+        <div id="qr" style="margin: auto;
+        width: 50%;
+        padding-top: 10px;"/>
+        <a id="qrRef" href="" style="margin: auto; font-size: 1.5rem; font-weight: 200;">Ir al sitio</a>
       </ModalCMat>
 
       {
@@ -81,18 +76,15 @@ import MaterialForm from '../components/MaterialForm.astro';
   const obtenerQR = (id = "") => {
     const boton = document.getElementById('qr-trigger');
     
-    const qrHistorico = document.getElementById("qr-historico");
-    qrHistorico.innerHTML = '';
-
-    const qrCamino = document.getElementById("qr-camino");
-    qrCamino.innerHTML = '';
+    const qr = document.getElementById("qr");
+    qr.innerHTML = '';
 
     if (!navigator.userAgent.match(/Android/i) && !navigator.userAgent.match(/iPhone/i)) {
-      const qrCodeHistorico = new QRCodeStyling({
+      const qrCode = new QRCodeStyling({
           width: 300,
           height: 300,
           type: "svg",
-          data: `${baseURL}/historia?id=${id}&tipo=material`,
+          data: `${baseURL}/historico?id=${id}&tipo=distribucion`,
           image: "https://res.cloudinary.com/nodecafe/image/upload/v1663610000/Dashboard/btrh6itbz41zn31lslsw.png",
           dotsOptions: {
               color: "#33383D",
@@ -106,31 +98,10 @@ import MaterialForm from '../components/MaterialForm.astro';
           }
       });
 
-      qrCodeHistorico.append(qrHistorico);
-
-      const qrCodeHistoria = new QRCodeStyling({
-          width: 300,
-          height: 300,
-          type: "svg",
-          data: `${baseURL}/historico?id=${id}&tipo=material`,
-          image: "https://res.cloudinary.com/nodecafe/image/upload/v1662070742/Dashboard/iso27xyjun0hkv1jf8yw.png",
-          dotsOptions: {
-              color: "#33383D",
-              type: "rounded"
-          },
-          backgroundOptions: {
-              color: "#ffffff",
-          },
-          imageOptions: {
-              crossOrigin: "anonymous"
-          }
-      });
-
-      qrCodeHistoria.append(qrCamino);
+      qrCode.append(qr);
     }
 
-    document.getElementById("qrRef-historico").href = `${baseURL}/historico?id=${id}&tipo=material`;
-    document.getElementById("qrRef-camino").href = `${baseURL}/historia?id=${id}&tipo=material`;
+    document.getElementById("qrRef").href = `${baseURL}/historico?id=${id}&tipo=distribucion`;
     
     boton.click();
   };
