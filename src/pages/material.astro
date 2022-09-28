@@ -92,7 +92,7 @@ import MaterialForm from '../components/MaterialForm.astro';
           width: 300,
           height: 300,
           type: "svg",
-          data: `${baseURL}/historia?id=${id}&tipo=material`,
+          data: `${baseURL}/historico?id=${id}&tipo=material`,
           image: "https://res.cloudinary.com/nodecafe/image/upload/v1663610000/Dashboard/btrh6itbz41zn31lslsw.png",
           dotsOptions: {
               color: "#33383D",
@@ -106,13 +106,11 @@ import MaterialForm from '../components/MaterialForm.astro';
           }
       });
 
-      qrCodeHistorico.append(qrHistorico);
-
       const qrCodeHistoria = new QRCodeStyling({
           width: 300,
           height: 300,
           type: "svg",
-          data: `${baseURL}/historico?id=${id}&tipo=material`,
+          data: `${baseURL}/historia?id=${id}&tipo=material`,
           image: "https://res.cloudinary.com/nodecafe/image/upload/v1662070742/Dashboard/iso27xyjun0hkv1jf8yw.png",
           dotsOptions: {
               color: "#33383D",
@@ -127,6 +125,7 @@ import MaterialForm from '../components/MaterialForm.astro';
       });
 
       qrCodeHistoria.append(qrCamino);
+      qrCodeHistorico.append(qrHistorico);
     }
 
     document.getElementById("qrRef-historico").href = `${baseURL}/historico?id=${id}&tipo=material`;

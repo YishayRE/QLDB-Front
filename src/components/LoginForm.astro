@@ -37,7 +37,7 @@ import { Icon } from 'astro-icon'
   submitButton.addEventListener('click', event => {
     event.preventDefault()
 
-    if (emailInput.value === 'admin@astro.demo' && passwordInput.value === 'Astronaut570') {
+    if (emailInput.value === 'admin' && passwordInput.value === 'admin') {
       localStorage.setItem('isLoggedIn', 'true')
       window.location.href = '/material/1'
     } else {
