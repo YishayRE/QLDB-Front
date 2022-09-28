@@ -279,9 +279,9 @@ const {
         
         content.innerHTML = html;
       }
-      break;  
-    default:
-      resp = await fetch(`${import.meta.env.PUBLIC_API_URL}/producciones/`, requestOptions);
+      break;
+    case '/distribucion/':
+      resp = await fetch(`${import.meta.env.PUBLIC_API_URL}/distribuciones/`, requestOptions);
 
       dibujarT = (array, page) => {
         let html = ''
@@ -290,19 +290,18 @@ const {
         const arrayF = array.slice(inicio, fin);
         
         arrayF.forEach(data => {
-          console.log(data.idProduccion);
           html += `
           <tr slot="tr" class="" role="alert" onclick=obtenerQR("${data._id}")>
             <td class="d-flex align-items-center">
               <div class="img botella"></div>
               <div class="pl-3 email">
-                  <span>Id de producción: ${data.idProduccion}</span>
+                  <span>Id de distribución: ${data.idDistribucion}</span>
                   <span>${data._id}</span>
               </div>
             </td>
-            <td>${data.lugarProduccion}</td>
+            <td>${data.idProduccion}</td>
             <td class="status"><span class="active">${new Date(data.fechaInicio).toLocaleString()}</span></td>
-            <td class="status"><span class="${(data.fechaFIn) ? 'active' : 'waiting'}">${(data.fechaFIn) ? new Date(data.fechaFIn).toLocaleString() : 'Sin fecha final'}</span></td>
+            <td class="status"><span class="${(data.fechaFin) ? 'active' : 'waiting'}">${(data.fechaFin) ? new Date(data.fechaFin).toLocaleString() : 'Sin fecha final'}</span></td>
           </tr>
           `;
         });
@@ -326,14 +325,14 @@ const {
               </div>
               <div class="card__content">
                 <h3>
-                  <a>Id de producción ${data.idProduccion}</a>
+                  <a>Id de distribución ${data.idDistribucion}</a>
                 </h3>
                 <h5>
-                  ${data.lugarProduccion}
+                  ${data.idProduccion}
                 </h5>
                 <p>
                   <p>${new Date(data.fechaInicio).toLocaleString()}</p>
-                  <p>${(data.fechaFIn) ? new Date(data.fechaFIn).toLocaleString() : 'Sin fecha final'}</p>
+                  <p>${(data.fechaFin) ? new Date(data.fechaFin).toLocaleString() : 'Sin fecha final'}</p>
                 </p>
                 <small>
                   ${data._id}
@@ -347,6 +346,133 @@ const {
         
         content.innerHTML = html;
       }
+      break;
+      case '/distribuidor/':
+        resp = await fetch(`${import.meta.env.PUBLIC_API_URL}/distribuidores/`, requestOptions);
+
+        dibujarT = (array, page) => {
+          let html = ''
+          const inicio = (page - 1) * 6;
+          const fin = page * 6
+          const arrayF = array.slice(inicio, fin);
+          
+          arrayF.forEach(data => {
+            html += `
+            <tr slot="tr" class="" role="alert" onclick=obtenerQR("${data._id}")>
+              <td class="d-flex align-items-center">
+                <div class="img botella"></div>
+                <div class="pl-3 email">
+                    <span>Id de distribuidor: ${data.idDistribuidor}</span>
+                    <span>${data._id}</span>
+                </div>
+              </td>
+              <td>${data.idDistribucion}</td>
+              <td>${data.nombre}</td>
+              <td>${data.lugar}</td>
+            </tr>
+            `;
+          });
+
+          const tabla = document.querySelector('#tabla');
+          
+          tabla.innerHTML = html;
+        }
+
+        dibujarC = (array, page) => {
+          let html = ''
+          const inicio = (page - 1) * 6;
+          const fin = page * 6
+          const arrayF = array.slice(inicio, fin);
+
+          arrayF.forEach(data => {
+            html += `
+              <div class="card" onclick=obtenerQR("${data._id}")>
+                <div class="card__image">
+                  <img src=${imgs[1]} alt="">
+                </div>
+                <div class="card__content">
+                  <h3>
+                    <a>Id de distribuidor ${data.idDistribuidor}</a>
+                  </h3>
+                  <h5>
+                    ${data.idDistribucion}
+                  </h5>
+                  <p>
+                    <p>${data.nombre}</p>
+                    <p>${data.lugar}</p>
+                  </p>
+                  <small>
+                    ${data._id}
+                  </small>
+                </div>
+              </div>
+            `;
+          });
+
+          const content = document.querySelector('#content');
+          
+          content.innerHTML = html;
+        }
+      break;
+    case '/tequila/':
+      resp = await fetch(`${import.meta.env.PUBLIC_API_URL}/tequilas/`, requestOptions);
+
+      dibujarT = (array, page) => {
+        let html = ''
+        const inicio = (page - 1) * 6;
+        const fin = page * 6
+        const arrayF = array.slice(inicio, fin);
+        
+        arrayF.forEach(data => {
+          html += `
+          <tr slot="tr" class="" role="alert" onclick=obtenerQR("${data._id}")>
+            <td class="d-flex align-items-center">
+              <div class="img botella"></div>
+              <div class="pl-3 email">
+                  <span>Lote del tequila: ${data.lote}</span>
+                  <span>${data._id}</span>
+              </div>
+            </td>
+            <td>Distribuidor por: ${data.idDistribuidor}</td>
+          </tr>
+          `;
+        });
+
+        const tabla = document.querySelector('#tabla');
+
+        tabla.innerHTML = html;
+      }
+
+      dibujarC = (array, page) => {
+        let html = ''
+        const inicio = (page - 1) * 6;
+        const fin = page * 6
+        const arrayF = array.slice(inicio, fin);
+
+        arrayF.forEach(data => {
+          html += `
+            <div class="card" onclick=obtenerQR("${data._id}")>
+              <div class="card__image">
+                <img src=${imgs[1]} alt="">
+              </div>
+              <div class="card__content">
+                <h3>
+                  <a>Lote del tequila: ${data.lote}</a>
+                </h3>
+                <h5>
+                  Distribuido por: ${data.idDistribuidor}
+                </h5>
+              </div>
+            </div>
+          `;
+        });
+
+        const content = document.querySelector('#content');
+        
+        content.innerHTML = html;
+      }
+      break;
+    default:
       break;
   }
 
