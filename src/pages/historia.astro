@@ -2,7 +2,7 @@
 import NoLoginLayout from '../layouts/NoLoginLayout.astro'
 ---
 
-<NoLoginLayout title="Historico">
+<NoLoginLayout title="Historia">
   <section>
     <h1 id="titulo">Historico con error</h1><br>
     <p id="descripcion" class="size-20">Error</p>
@@ -64,11 +64,12 @@ import NoLoginLayout from '../layouts/NoLoginLayout.astro'
       break;
   }
 
-  const {material, transporte, produccion} = await resp.json();
+  const {material, transporte, produccion, distribucion} = await resp.json();
 
   const namesM = [];
   const namesT = [];
   const namesP = [];
+  const namesD = [];
 
   for (const name in material.data)
     if (Object.hasOwnProperty.call(material.data, name))
@@ -81,6 +82,10 @@ import NoLoginLayout from '../layouts/NoLoginLayout.astro'
   for (const name in produccion.data)
     if (Object.hasOwnProperty.call(produccion.data, name))
       namesP.push(name);
+
+  for (const name in distribucion.data)
+    if (Object.hasOwnProperty.call(distribucion.data, name))
+      namesD.push(name);
 
   const chart = am4core.create("chartdiv", am4plugins_forceDirected.ForceDirectedTree);
   // Create series
@@ -108,6 +113,22 @@ import NoLoginLayout from '../layouts/NoLoginLayout.astro'
     }
   });
 
+  const dist = namesD.map(name => {
+    return {
+      "name": name,
+      "collapsed": true,
+      "value": 0.75,
+      "valorPropio": distribucion.data[name],
+    }
+  })
+
+  const bloqueD = {
+    "name": 'bloque',
+    "valorPropio": transporte.metadata.id,
+    "collapsed": true,
+    "value": 0.75,
+  }
+
   const bloqueT = {
     "name": 'bloque',
     "valorPropio": transporte.metadata.id,
@@ -121,6 +142,7 @@ import NoLoginLayout from '../layouts/NoLoginLayout.astro'
     "valorPropio": 'Transporte',
     "collapsed": true,
     "value": 1,
+    "link": ["Material1"],
     "children": [...tran, bloqueT]
   }
 
@@ -130,10 +152,30 @@ import NoLoginLayout from '../layouts/NoLoginLayout.astro'
     "valorPropio": 'Produccion',
     "collapsed": true,
     "value": 1,
+    "link": ["Material2"],
+    "children": prod
+  }
+
+  const distribucionC = {
+    "id": "Distribucion",
+    "name": 'Nombre',
+    "valorPropio": 'Produccion',
+    "collapsed": true,
+    "value": 1,
+    "link": ["Material2"],
     "children": prod
   }
 
   const mat = namesM.map(name => {
+    if(name == '_idProduccion')
+      return {
+        "id": "Material2",
+        "name": name,
+        "collapsed": true,
+        "value": 0.75,
+        "valorPropio": material.data[name],
+        "link": "Produccion",
+      }
     return {
       "name": name,
       "collapsed": true,
@@ -143,20 +185,21 @@ import NoLoginLayout from '../layouts/NoLoginLayout.astro'
   });
 
   const bloqueM = {
+    "id": "Material1",
     "name": 'bloque',
     "valorPropio": material.metadata.id,
     "collapsed": true,
     "value": 0.75,
+    "link": "Transporte",
   };
 
   // Set data
   series.data = [{
     "id": "Material",
     "name": 'Nombre',
-    "collapsed": true,
+    "collapsed": false,
     "valorPropio": 'Material',
     "value": 1,
-    "link": ["Transporte", "Produccion"],
     "children": [...mat, bloqueM]
   }, transporteC, produccionC];
 

@@ -101,7 +101,7 @@ import TransporteForm from '../components/TransporteForm.astro';
       qrCode.append(qr);
     }
 
-    document.getElementById("qrRef").href = `${baseURL}/historico?id=${id}&tipo=transporte`;
+    document.getElementById("qrRef").href = `${baseURL}?id=${id}&tipo=transporte`;
     
     boton.click();
   };

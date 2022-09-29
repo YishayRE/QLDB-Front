@@ -101,7 +101,7 @@ import ProduccionForm from '../components/ProduccionForm.astro';
       qrCode.append(qr);
     }
 
-    document.getElementById("qrRef").href = `${baseURL}/historico?id=${id}&tipo=produccion`;
+    document.getElementById("qrRef").href = `${baseURL}?id=${id}&tipo=produccion`;
     
     boton.click();
   };

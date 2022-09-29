@@ -101,7 +101,7 @@ import DistribucionForm from '../components/DistribucionForm.astro';
       qrCode.append(qr);
     }
 
-    document.getElementById("qrRef").href = `${baseURL}/historico?id=${id}&tipo=distribucion`;
+    document.getElementById("qrRef").href = `${baseURL}?id=${id}&tipo=distribucion`;
     
     boton.click();
   };

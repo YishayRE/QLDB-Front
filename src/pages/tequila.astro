@@ -101,7 +101,7 @@ import TequilaForm from '../components/TequilaForm.astro';
       qrCode.append(qr);
     }
 
-    document.getElementById("qrRef").href = `${baseURL}/historico?id=${id}&tipo=tequila`;
+    document.getElementById("qrRef").href = `${baseURL}?id=${id}&tipo=tequila`;
     
     boton.click();
   };
