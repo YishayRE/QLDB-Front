@@ -94,7 +94,7 @@ import NoLoginLayout from '../layouts/NoLoginLayout.astro'
       return {
         "name": name,
         "collapsed": true,
-        "value": 0.5,
+        "value": 0.75,
         "valorPropio": transporte.data[name],
       }
   }).filter(item => item);
@@ -103,7 +103,7 @@ import NoLoginLayout from '../layouts/NoLoginLayout.astro'
     return {
       "name": name,
       "collapsed": true,
-      "value": 0.5,
+      "value": 0.75,
       "valorPropio": produccion.data[name],
     }
   });
@@ -112,65 +112,61 @@ import NoLoginLayout from '../layouts/NoLoginLayout.astro'
     "name": 'bloque',
     "valorPropio": transporte.metadata.id,
     "collapsed": true,
-    "value": 0.5,
+    "value": 0.75,
   };
 
   const transporteC = {
+    "id": "Transporte",
     "name": 'Nombre',
     "valorPropio": 'Transporte',
     "collapsed": true,
-    "value": 0.75,
+    "value": 1,
     "children": [...tran, bloqueT]
   }
 
   const produccionC = {
+    "id": "Produccion",
     "name": 'Nombre',
     "valorPropio": 'Produccion',
     "collapsed": true,
-    "value": 0.75,
+    "value": 1,
     "children": prod
   }
 
   const mat = namesM.map(name => {
-    if(name == '_idProduccion')
-      return {
-        "name": name,
-        "value": 0.5,
-        "collapsed": true,
-        "valorPropio": material.data[name],
-        "children": [produccionC]
-      }
-    else
-      return {
-        "name": name,
-        "collapsed": true,
-        "value": 0.5,
-        "valorPropio": material.data[name],
-      }
+    return {
+      "name": name,
+      "collapsed": true,
+      "value": 0.75,
+      "valorPropio": material.data[name],
+    }
   });
 
   const bloqueM = {
     "name": 'bloque',
     "valorPropio": material.metadata.id,
     "collapsed": true,
-    "value": 0.5,
-    "children": [transporteC]
+    "value": 0.75,
   };
 
   // Set data
   series.data = [{
+    "id": "Material",
     "name": 'Nombre',
-    "collapsed": false,
+    "collapsed": true,
     "valorPropio": 'Material',
     "value": 1,
+    "link": ["Transporte", "Produccion"],
     "children": [...mat, bloqueM]
-  }];
+  }, transporteC, produccionC];
 
   // Set up data fields
   series.dataFields.value = "value";
   series.dataFields.name = "name";
   series.dataFields.children = "children";
   series.dataFields.collapsed = "collapsed";
+  series.dataFields.id = "id";
+  series.dataFields.linkWith = "link";
 
   // Add labels
   series.nodes.template.label.text = "{valorPropio}";
