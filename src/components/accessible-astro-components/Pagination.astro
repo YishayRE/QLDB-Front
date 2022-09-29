@@ -291,15 +291,15 @@ const {
         
         arrayF.forEach(data => {
           html += `
-          <tr slot="tr" class="" role="alert" onclick=obtenerQR("${data._id}")>
+          <tr slot="tr" class="" role="alert" onclick=obtenerQR("${data.id}")>
             <td class="d-flex align-items-center">
               <div class="img botella"></div>
               <div class="pl-3 email">
                   <span>Id de distribución: ${data.idDistribucion}</span>
-                  <span>${data._id}</span>
+                  <span>${data.id}</span>
               </div>
             </td>
-            <td>${data.idProduccion}</td>
+            <td>${data.lugarProduccion}</td>
             <td class="status"><span class="active">${new Date(data.fechaInicio).toLocaleString()}</span></td>
             <td class="status"><span class="${(data.fechaFin) ? 'active' : 'waiting'}">${(data.fechaFin) ? new Date(data.fechaFin).toLocaleString() : 'Sin fecha final'}</span></td>
           </tr>
@@ -319,7 +319,7 @@ const {
 
         arrayF.forEach(data => {
           html += `
-            <div class="card" onclick=obtenerQR("${data._id}")>
+            <div class="card" onclick=obtenerQR("${data.id}")>
               <div class="card__image">
                 <img src=${imgs[1]} alt="">
               </div>
@@ -328,14 +328,14 @@ const {
                   <a>Id de distribución ${data.idDistribucion}</a>
                 </h3>
                 <h5>
-                  ${data.idProduccion}
+                  ${data.lugarProduccion}
                 </h5>
                 <p>
                   <p>${new Date(data.fechaInicio).toLocaleString()}</p>
                   <p>${(data.fechaFin) ? new Date(data.fechaFin).toLocaleString() : 'Sin fecha final'}</p>
                 </p>
                 <small>
-                  ${data._id}
+                  ${data.id}
                 </small>
               </div>
             </div>
@@ -347,72 +347,72 @@ const {
         content.innerHTML = html;
       }
       break;
-      case '/distribuidor/':
-        resp = await fetch(`${import.meta.env.PUBLIC_API_URL}/distribuidores/`, requestOptions);
+    case '/distribuidor/':
+      resp = await fetch(`${import.meta.env.PUBLIC_API_URL}/distribuidores/`, requestOptions);
 
-        dibujarT = (array, page) => {
-          let html = ''
-          const inicio = (page - 1) * 6;
-          const fin = page * 6
-          const arrayF = array.slice(inicio, fin);
-          
-          arrayF.forEach(data => {
-            html += `
-            <tr slot="tr" class="" role="alert" onclick=obtenerQR("${data._id}")>
-              <td class="d-flex align-items-center">
-                <div class="img botella"></div>
-                <div class="pl-3 email">
-                    <span>Id de distribuidor: ${data.idDistribuidor}</span>
-                    <span>${data._id}</span>
-                </div>
-              </td>
-              <td>${data.idDistribucion}</td>
-              <td>${data.nombre}</td>
-              <td>${data.lugar}</td>
-            </tr>
-            `;
-          });
-
-          const tabla = document.querySelector('#tabla');
-          
-          tabla.innerHTML = html;
-        }
-
-        dibujarC = (array, page) => {
-          let html = ''
-          const inicio = (page - 1) * 6;
-          const fin = page * 6
-          const arrayF = array.slice(inicio, fin);
-
-          arrayF.forEach(data => {
-            html += `
-              <div class="card" onclick=obtenerQR("${data._id}")>
-                <div class="card__image">
-                  <img src=${imgs[1]} alt="">
-                </div>
-                <div class="card__content">
-                  <h3>
-                    <a>Id de distribuidor ${data.idDistribuidor}</a>
-                  </h3>
-                  <h5>
-                    ${data.idDistribucion}
-                  </h5>
-                  <p>
-                    <p>${data.nombre}</p>
-                    <p>${data.lugar}</p>
-                  </p>
-                  <small>
-                    ${data._id}
-                  </small>
-                </div>
+      dibujarT = (array, page) => {
+        let html = ''
+        const inicio = (page - 1) * 6;
+        const fin = page * 6
+        const arrayF = array.slice(inicio, fin);
+        
+        arrayF.forEach(data => {
+          html += `
+          <tr slot="tr" class="" role="alert" onclick=obtenerQR("${data.id}")>
+            <td class="d-flex align-items-center">
+              <div class="img botella"></div>
+              <div class="pl-3 email">
+                  <span>Id de distribuidor: ${data.idDistribuidor}</span>
+                  <span>${data.id}</span>
               </div>
-            `;
-          });
+            </td>
+            <td>${data.nombre}</td>
+            <td>${data.lugar}</td>
+            <td>${data.nDistribucion}</td>
+          </tr>
+          `;
+        });
 
-          const content = document.querySelector('#content');
-          
-          content.innerHTML = html;
-        }
+        const tabla = document.querySelector('#tabla');
+        
+        tabla.innerHTML = html;
+      }
+
+      dibujarC = (array, page) => {
+        let html = ''
+        const inicio = (page - 1) * 6;
+        const fin = page * 6
+        const arrayF = array.slice(inicio, fin);
+
+        arrayF.forEach(data => {
+          html += `
+            <div class="card" onclick=obtenerQR("${data.id}")>
+              <div class="card__image">
+                <img src=${imgs[1]} alt="">
+              </div>
+              <div class="card__content">
+                <h3>
+                  <a>${data.nombre}</a>
+                </h3>
+                <h5>
+                  ${data.lugar}
+                </h5>
+                <p>
+                  <p>Id de distribuidor: ${data.idDistribuidor}</p>
+                  <p>Número de distribución: ${data.nDistribucion}</p>
+                </p>
+                <small>
+                  ${data.id}
+                </small>
+              </div>
+            </div>
+          `;
+        });
+
+        const content = document.querySelector('#content');
+        
+        content.innerHTML = html;
+      }
       break;
     case '/tequila/':
       resp = await fetch(`${import.meta.env.PUBLIC_API_URL}/tequilas/`, requestOptions);
@@ -425,15 +425,17 @@ const {
         
         arrayF.forEach(data => {
           html += `
-          <tr slot="tr" class="" role="alert" onclick=obtenerQR("${data._id}")>
+          <tr slot="tr" class="" role="alert" onclick=obtenerQR("${data.id}")>
             <td class="d-flex align-items-center">
               <div class="img botella"></div>
               <div class="pl-3 email">
                   <span>Lote del tequila: ${data.lote}</span>
-                  <span>${data._id}</span>
+                  <span>${data.id}</span>
               </div>
             </td>
-            <td>Distribuidor por: ${data.idDistribuidor}</td>
+            <td>Comprado en: ${data.nombre}</td>
+            <td>${data.lugar}</td>
+            <td>${data.lugarProduccion}</td>
           </tr>
           `;
         });
@@ -451,7 +453,7 @@ const {
 
         arrayF.forEach(data => {
           html += `
-            <div class="card" onclick=obtenerQR("${data._id}")>
+            <div class="card" onclick=obtenerQR("${data.id}")>
               <div class="card__image">
                 <img src=${imgs[1]} alt="">
               </div>
@@ -460,8 +462,15 @@ const {
                   <a>Lote del tequila: ${data.lote}</a>
                 </h3>
                 <h5>
-                  Distribuido por: ${data.idDistribuidor}
+                  Comprado en: ${data.nombre}
                 </h5>
+                <p>
+                  <p>${data.lugar}</p>
+                  <p>Procedencia: ${data.lugarProduccion}</p>
+                </p>
+                <small>
+                  ${data.id}
+                </small>
               </div>
             </div>
           `;

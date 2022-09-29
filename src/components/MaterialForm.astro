@@ -13,7 +13,10 @@ import { Icon } from 'astro-icon'
   </div>
   <div class="crear-form__controls">
     <label for="Nombre">Nombre</label>
-    <input type="text" name="Nombre" required>
+    <select name="Nombre" required>
+      <option value="Agave">Agave</option>
+      <option value="Botellas">Botellas</option>
+    </select>
   </div>
   <div class="crear-form__controls">
     <label for="FechaRecoleccion">Fecha de Recolección</label>
@@ -55,6 +58,7 @@ import { Icon } from 'astro-icon'
   notification.style.display = 'none';
 
   submitButton.addEventListener('click', async(event) => {
+    showLoader();
     event.preventDefault();
 
     const object = {
@@ -79,9 +83,16 @@ import { Icon } from 'astro-icon'
 
     const resp = await fetch(`${import.meta.env.PUBLIC_API_URL}/materiales/`, requestOptions);
     const data = await resp.json();
+    const status = resp.status;
     console.log(data);
 
-    location.reload();
+    if(status === 200)
+      location.reload();
+    else {
+      notification.style.display = 'block';
+      notification.classList.add('notification--error');
+      notification.querySelector('p').innerHTML = 'La petición no pudo ser procesada.';
+    }
   });
 </script>
 
@@ -103,6 +114,14 @@ import { Icon } from 'astro-icon'
     input {
       padding: $space-8;
       border: 2px solid var(--neutral-600);
+      background-color: var(--background-input);
+    }
+
+    select{
+      padding: $space-8;
+      width: 100%;
+      @include radius-small;
+      background-color: var(--background-input);
     }
 
     .checkbox {

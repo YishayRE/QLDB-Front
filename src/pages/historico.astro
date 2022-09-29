@@ -60,6 +60,24 @@ import NoLoginLayout from '../layouts/NoLoginLayout.astro'
       resp = await fetch(`${import.meta.env.PUBLIC_API_URL}/transportes/historico/`, requestOptions);
       indicador = 'idTransporte';
       break;
+    case 'distribucion':
+      titulo.innerHTML = 'Historico de la distribución';
+      descripcion.innerHTML = `Muestra de los cambios en la distribución con bloque ${id}.`;
+      resp = await fetch(`${import.meta.env.PUBLIC_API_URL}/distribuciones/historico/`, requestOptions);
+      indicador = 'idDistribucion';
+      break;
+    case 'distribuidor':
+      titulo.innerHTML = 'Historico del distribuidor';
+      descripcion.innerHTML = `Muestra de los cambios en el distribuidor con bloque ${id}.`;
+      resp = await fetch(`${import.meta.env.PUBLIC_API_URL}/distribuidores/historico/`, requestOptions);
+      indicador = 'idDistribuidor';
+      break;
+    case 'tequila':
+      titulo.innerHTML = 'Historico del tequila';
+      descripcion.innerHTML = `Muestra de los cambios en el tequila con bloque ${id}.`;
+      resp = await fetch(`${import.meta.env.PUBLIC_API_URL}/tequilas/historico/`, requestOptions);
+      indicador = 'lote';
+      break;
     default:
       break;
   }

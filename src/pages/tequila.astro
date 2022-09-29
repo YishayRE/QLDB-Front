@@ -6,10 +6,10 @@ import Table from '../components/Table.astro';
 import TequilaForm from '../components/TequilaForm.astro';
 ---
 
-<DefaultLayout title="Material">
+<DefaultLayout title="Tequila">
   <section>
-    <h1 id="titulo">Materiales</h1><br>
-    <p class="size-20">Muestra de los materiales enviados.</p>
+    <h1 id="titulo">Tequilas</h1><br>
+    <p class="size-20">Muestra de los tequilas enviados.</p>
   </section>
   
   <section class="margin-32">
@@ -20,7 +20,7 @@ import TequilaForm from '../components/TequilaForm.astro';
 
       <ModalCMat
         triggerId="modal-trigger"
-        title="Crear nuevo material"
+        title="Crear nuevo tequila"
         closeText="Cancel"
       >
         <TequilaForm />
@@ -43,9 +43,9 @@ import TequilaForm from '../components/TequilaForm.astro';
           <div id="div-tabla">
             <Table>
               <th slot="th">Identificador</th>
-              <th slot="th">Nombre</th>
-              <th slot="th">Cantidad</th>
-              <th slot="th">Procedencia</th>
+              <th slot="th">Nombre del distribuidor</th>
+              <th slot="th">Lugar de compra</th>
+              <th slot="th">Lugar de procedencia</th>
             </Table>
           </div>
       }
@@ -84,7 +84,7 @@ import TequilaForm from '../components/TequilaForm.astro';
           width: 300,
           height: 300,
           type: "svg",
-          data: `${baseURL}/historico?id=${id}&tipo=material`,
+          data: `${baseURL}/historico?id=${id}&tipo=tequila`,
           image: "https://res.cloudinary.com/nodecafe/image/upload/v1663610000/Dashboard/btrh6itbz41zn31lslsw.png",
           dotsOptions: {
               color: "#33383D",
@@ -101,7 +101,7 @@ import TequilaForm from '../components/TequilaForm.astro';
       qrCode.append(qr);
     }
 
-    document.getElementById("qrRef").href = `${baseURL}/historico?id=${id}&tipo=material`;
+    document.getElementById("qrRef").href = `${baseURL}/historico?id=${id}&tipo=tequila`;
     
     boton.click();
   };

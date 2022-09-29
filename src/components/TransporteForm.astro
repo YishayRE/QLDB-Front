@@ -9,27 +9,27 @@ import { Icon } from 'astro-icon'
   </Notification>
   <div class="crear-form__controls">
     <label for="_idMaterial">Id de Material</label>
-    <input type="text" name="_idMaterial" required>
+    <input type="text" name="_idMaterial" id="_idMaterial" required>
   </div>
   <div class="crear-form__controls">
     <label for="idTransporte">Id de Transporte</label>
-    <input type="number" name="idTransporte" required>
+    <input type="number" name="idTransporte" id="idTransporte" required>
   </div>
   <div class="crear-form__controls">
     <label for="origen">Origen</label>
-    <input type="text" name="origen" required>
+    <input type="text" name="origen" id="origen" required>
   </div>
   <div class="crear-form__controls">
     <label for="destino">Destino</label>
-    <input type="text" name="destino" required>
+    <input type="text" name="destino" id="destino" required>
   </div>
   <div class="crear-form__controls">
     <label for="fechaInicio">Fecha de inicio</label>
-    <input type="date" name="fechaInicio" required>
+    <input type="datetime-local" name="fechaInicio" id="fechaInicio" required>
   </div>
   <div class="crear-form__controls">
     <label for="fechaFin">Fecha de llegada</label>
-    <input type="date" name="fechaFin" required>
+    <input type="datetime-local" name="fechaFin" id="fechaFin" required>
   </div>
   <button class="button color-secondary behavior-full" type="submit">Crear</button>
 </form> 
@@ -38,13 +38,12 @@ import { Icon } from 'astro-icon'
   // variables
   const form = document.querySelector('.crear-form');
   const notification = form.querySelector('.notification');
-  const loteInput = form.querySelector('input[name="Lote"]');
-  const nombreInput = form.querySelector('input[name="Nombre"]');
-  const fechaInput = form.querySelector('input[name="FechaRecoleccion"]');
-  const cantidadInput = form.querySelector('input[name="Cantidad"]');
-  const estadoInput = form.querySelector('input[name="Estado"]');
-  const municipioInput = form.querySelector('input[name="Municipio"]');
-  const ciuadInput = form.querySelector('input[name="Ciudad"]');
+  const _idMaterial = form.querySelector('input[name="_idMaterial"]');
+  const idTransporte = form.querySelector('input[name="idTransporte"]');
+  const origen = form.querySelector('input[name="origen"]');
+  const destino = form.querySelector('input[name="destino"]');
+  const fechaInicio = form.querySelector('input[name="fechaInicio"]');
+  const fechaFin = form.querySelector('input[name="fechaFin"]');
   const submitButton = form.querySelector('button');
 
   // execution
@@ -54,11 +53,12 @@ import { Icon } from 'astro-icon'
     event.preventDefault();
 
     const object = {
-      Lote: loteInput.value,
-      Nombre: nombreInput.value,
-      FechaRecoleccion: fechaInput.value,
-      Cantidad: cantidadInput.value,
-      Origen: `${estadoInput.value}, ${municipioInput.value}, ${ciuadInput.value}`
+      _idMaterial: _idMaterial.value,
+      idTransporte: idTransporte.value,
+      origen: origen.value,
+      destino: destino.value,
+      fechaInicio: fechaInicio.value,
+      fechaFin: fechaFin.value
     }
 
     const myHeaders = new Headers();
@@ -73,11 +73,18 @@ import { Icon } from 'astro-icon'
       redirect: 'follow'
     }
 
-    const resp = await fetch(`${import.meta.env.PUBLIC_API_URL}/materiales/`, requestOptions);
+    const resp = await fetch(`${import.meta.env.PUBLIC_API_URL}/transportes/`, requestOptions);
     const data = await resp.json();
+    const status = resp.status;
     console.log(data);
 
-    location.reload();
+    if(status === 200)
+      location.reload();
+    else {
+      notification.style.display = 'block';
+      notification.classList.add('notification--error');
+      notification.querySelector('p').innerHTML = 'La petición no pudo ser procesada.';
+    }
   });
 </script>
 

@@ -8,20 +8,20 @@ import { Icon } from 'astro-icon'
     <Icon pack="majesticons" name="emoji-sad-line" /><p class="size-12">La petición no pudo ser procesada.</p>
   </Notification>
   <div class="crear-form__controls">
-    <label for="idProduccion">Id de Producción</label>
-    <input type="text" name="idProduccion" required>
+    <label for="idDistribuidor">Id de distribuidor</label>
+    <input type="text" name="idDistribuidor" required>
   </div>
   <div class="crear-form__controls">
-    <label for="fechaInicio">Fecha de inicio</label>
-    <input type="date" name="fechaInicio" required>
+    <label for="nombre">Nombre</label>
+    <input type="text" name="nombre" required>
   </div>
   <div class="crear-form__controls">
-    <label for="fechaFIn">Fecha final</label>
-    <input type="date" name="fechaFIn" required>
+    <label for="lugar">Lugar</label>
+    <input type="text" name="lugar" required>
   </div>
   <div class="crear-form__controls">
-    <label for="lugarProduccion">Lugar de producción</label>
-    <input type="text" name="lugarProduccion" required>
+    <label for="idDistribucion">Id de distribución</label>
+    <input type="text" name="idDistribucion" required>
   </div>
   <button class="button color-secondary behavior-full" type="submit">Crear</button>
 </form> 
@@ -30,27 +30,24 @@ import { Icon } from 'astro-icon'
   // variables
   const form = document.querySelector('.crear-form');
   const notification = form.querySelector('.notification');
-  const loteInput = form.querySelector('input[name="Lote"]');
-  const nombreInput = form.querySelector('input[name="Nombre"]');
-  const fechaInput = form.querySelector('input[name="FechaRecoleccion"]');
-  const cantidadInput = form.querySelector('input[name="Cantidad"]');
-  const estadoInput = form.querySelector('input[name="Estado"]');
-  const municipioInput = form.querySelector('input[name="Municipio"]');
-  const ciuadInput = form.querySelector('input[name="Ciudad"]');
+  const idDistribuidor = form.querySelector('input[name="idDistribuidor"]');
+  const nombre = form.querySelector('input[name="nombre"]');
+  const lugar = form.querySelector('input[name="lugar"]');
+  const idDistribucion = form.querySelector('input[name="idDistribucion"]');
   const submitButton = form.querySelector('button');
 
   // execution
   notification.style.display = 'none';
 
   submitButton.addEventListener('click', async(event) => {
+    showLoader();
     event.preventDefault();
 
     const object = {
-      Lote: loteInput.value,
-      Nombre: nombreInput.value,
-      FechaRecoleccion: fechaInput.value,
-      Cantidad: cantidadInput.value,
-      Origen: `${estadoInput.value}, ${municipioInput.value}, ${ciuadInput.value}`
+      idDistribuidor: idDistribuidor.value,
+      nombre: nombre.value,
+      lugar: lugar.value,
+      idDistribucion: idDistribucion.value
     }
 
     const myHeaders = new Headers();
@@ -65,11 +62,18 @@ import { Icon } from 'astro-icon'
       redirect: 'follow'
     }
 
-    const resp = await fetch(`${import.meta.env.PUBLIC_API_URL}/materiales/`, requestOptions);
+    const resp = await fetch(`${import.meta.env.PUBLIC_API_URL}/distribuidores/`, requestOptions);
     const data = await resp.json();
+    const status = resp.status;
     console.log(data);
 
-    location.reload();
+    if(status === 200)
+      location.reload();
+    else {
+      notification.style.display = 'block';
+      notification.classList.add('notification--error');
+      notification.querySelector('p').innerHTML = 'La petición no pudo ser procesada.';
+    }
   });
 </script>
 
