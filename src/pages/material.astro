@@ -30,7 +30,6 @@ import MaterialForm from '../components/MaterialForm.astro';
         triggerId="qr-trigger"
         title="QR Generado"
         closeText="Cancel"
-        modalSize="100vmin"
       >
         <div class="grid small-grid-1 medium-grid-2">
           <div id="qr-historico" style="margin: auto;
@@ -75,8 +74,8 @@ import MaterialForm from '../components/MaterialForm.astro';
     'https://dashboard-wundertec.herokuapp.com/api';
 
   const baseURL = (window.location.hostname.includes('localhost')) ?
-      'http://localhost:3000' :
-      'https://main.d19h8u6ts9lzi8.amplifyapp.com';
+      'http://localhost:3000/historico/' :
+      'https://main.d19h8u6ts9lzi8.amplifyapp.com/historico/';
 
   const obtenerQR = (id = "") => {
     const boton = document.getElementById('qr-trigger');
@@ -92,7 +91,7 @@ import MaterialForm from '../components/MaterialForm.astro';
           width: 300,
           height: 300,
           type: "svg",
-          data: `${baseURL}/historico/?id=${id}&tipo=material`,
+          data: `${baseURL}?id=${id}&tipo=material`,
           image: "https://res.cloudinary.com/nodecafe/image/upload/v1663610000/Dashboard/btrh6itbz41zn31lslsw.png",
           dotsOptions: {
               color: "#33383D",
@@ -106,30 +105,10 @@ import MaterialForm from '../components/MaterialForm.astro';
           }
       });
 
-      const qrCodeHistoria = new QRCodeStyling({
-          width: 300,
-          height: 300,
-          type: "svg",
-          data: `${baseURL}/historia?id=${id}&tipo=material`,
-          image: "https://res.cloudinary.com/nodecafe/image/upload/v1662070742/Dashboard/iso27xyjun0hkv1jf8yw.png",
-          dotsOptions: {
-              color: "#33383D",
-              type: "rounded"
-          },
-          backgroundOptions: {
-              color: "#ffffff",
-          },
-          imageOptions: {
-              crossOrigin: "anonymous"
-          }
-      });
-
-      qrCodeHistoria.append(qrCamino);
       qrCodeHistorico.append(qrHistorico);
     }
 
-    document.getElementById("qrRef-historico").href = `${baseURL}/historico?id=${id}&tipo=material`;
-    document.getElementById("qrRef-camino").href = `${baseURL}/historia?id=${id}&tipo=material`;
+    document.getElementById("qrRef-historico").href = `${baseURL}?id=${id}&tipo=material`;
     
     boton.click();
   };

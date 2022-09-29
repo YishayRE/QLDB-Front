@@ -70,8 +70,8 @@ import TequilaForm from '../components/TequilaForm.astro';
     'https://dashboard-wundertec.herokuapp.com/api';
 
   const baseURL = (window.location.hostname.includes('localhost')) ?
-      'http://localhost:3000' :
-      'https://main.d19h8u6ts9lzi8.amplifyapp.com';
+      'http://localhost:3000/historico/' :
+      'https://main.d19h8u6ts9lzi8.amplifyapp.com/historico/';
 
   const obtenerQR = (id = "") => {
     const boton = document.getElementById('qr-trigger');
@@ -84,7 +84,7 @@ import TequilaForm from '../components/TequilaForm.astro';
           width: 300,
           height: 300,
           type: "svg",
-          data: `${baseURL}/historico?id=${id}&tipo=tequila`,
+          data: `${baseURL}?id=${id}&tipo=tequila`,
           image: "https://res.cloudinary.com/nodecafe/image/upload/v1663610000/Dashboard/btrh6itbz41zn31lslsw.png",
           dotsOptions: {
               color: "#33383D",
