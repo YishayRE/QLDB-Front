@@ -39,26 +39,12 @@ import NoLoginLayout from '../layouts/NoLoginLayout.astro'
     redirect: 'follow'
   };
   let resp = {};
-  let indicador = '';
 
   switch (tipo) {
-    case 'produccion':
-      titulo.innerHTML = 'Historico de la Producción';
-      descripcion.innerHTML = `Muestra de los cambios en la producción con bloque ${id}.`;
-      resp = await fetch(`${import.meta.env.PUBLIC_API_URL}/producciones/historico/`, requestOptions);
-      indicador = 'idProduccion';
-      break;
     case 'material':
       titulo.innerHTML = 'Historia del Material';
       descripcion.innerHTML = `Muestra el proceso del material con bloque ${id}.`;
       resp = await fetch(`${import.meta.env.PUBLIC_API_URL}/materiales/historia/`, requestOptions);
-      indicador = 'Lote';
-      break;
-    case 'transporte':
-      titulo.innerHTML = 'Historico del Transporte';
-      descripcion.innerHTML = `Muestra de los cambios en el transporte con bloque ${id}.`;
-      resp = await fetch(`${import.meta.env.PUBLIC_API_URL}/transportes/historico/`, requestOptions);
-      indicador = 'idTransporte';
       break;
     default:
       break;
@@ -103,15 +89,6 @@ import NoLoginLayout from '../layouts/NoLoginLayout.astro'
   let series = chart.series.push(new am4plugins_forceDirected.ForceDirectedSeries())
 
   const mat = namesM.map(name => {
-    if(name == '_idProduccion')
-      return {
-        "id": "Material2",
-        "name": name,
-        "collapsed": true,
-        "value": 0.75,
-        "valorPropio": material.data[name],
-        "link": ["Produccion", "Distribucion"],
-      }
     return {
       "name": name,
       "collapsed": true,
@@ -121,16 +98,13 @@ import NoLoginLayout from '../layouts/NoLoginLayout.astro'
   });
 
   const tran = namesT.map(name => {
-    if(name == '_idMaterial')
-      return;
-    else
-      return {
-        "name": name,
-        "collapsed": true,
-        "value": 0.75,
-        "valorPropio": transporte.data[name],
-      }
-  }).filter(item => item);
+    return {
+      "name": name,
+      "collapsed": true,
+      "value": 0.75,
+      "valorPropio": transporte.data[name],
+    }
+  });
 
   const prod = namesP.map(name => {
     return {
@@ -142,45 +116,37 @@ import NoLoginLayout from '../layouts/NoLoginLayout.astro'
   });
 
   const dist = namesD.map(name => {
-    if(name == 'idProduccion')
-      return;
     return {
       "name": name,
       "collapsed": true,
       "value": 0.75,
       "valorPropio": distribucion.data[name],
     }
-  }).filter(item => item);
+  });
 
   const distr = namesDr.map(name => {
-    if(name == 'idDistribucion')
-      return;
     return {
       "name": name,
       "collapsed": true,
       "value": 0.75,
       "valorPropio": distribuidor.data[name],
     }
-  }).filter(item => item);
+  });
 
   const teq = namesTq.map(name => {
-    if(name == 'idDistribuidor')
-      return;
     return {
       "name": name,
       "collapsed": true,
       "value": 0.75,
       "valorPropio": tequila.data[name],
     }
-  }).filter(item => item);
+  });
 
   const bloqueM = {
-    "id": "Material1",
     "name": 'bloque',
     "valorPropio": material.metadata.id,
     "collapsed": true,
     "value": 0.75,
-    "link": "Transporte",
   }
 
   const bloqueT = {
@@ -190,22 +156,25 @@ import NoLoginLayout from '../layouts/NoLoginLayout.astro'
     "value": 0.75,
   }
 
+  const bloqueP = {
+    "name": 'bloque',
+    "valorPropio": produccion.metadata.id,
+    "collapsed": true,
+    "value": 0.75,
+  }
+
   const bloqueD = {
-    "id": "DistribucionID",
     "name": 'bloque',
     "valorPropio": distribucion.metadata.id,
     "collapsed": true,
     "value": 0.75,
-    "link": "Distribuidor"
   }
 
   const bloqueDr = {
-    "id": "DistribuidorID",
     "name": 'bloque',
     "valorPropio": distribuidor.metadata.id,
     "collapsed": true,
     "value": 0.75,
-    "link": "Tequila"
   }
 
   const bloqueTq = {
@@ -215,65 +184,86 @@ import NoLoginLayout from '../layouts/NoLoginLayout.astro'
     "value": 0.75,
   }
 
+  const materialC = {
+    "id": "Material",
+    "name": 'Nombre',
+    "x": am4core.percent(20),
+    "y": am4core.percent(70),  
+    "collapsed": true,
+    "fixed": true,
+    "valorPropio": 'Material',
+    "value": 1,
+    "link": ["Transporte", "Produccion"],
+    "children": [...mat, bloqueM]
+  }
+
   const transporteC = {
     "id": "Transporte",
     "name": 'Nombre',
+    "x": am4core.percent(22),
+    "y": am4core.percent(28),
+    "fixed": true,
     "valorPropio": 'Transporte',
     "collapsed": true,
     "value": 1,
-    "link": ["Material1"],
+    "link": ["Material", "Producción"],
     "children": [...tran, bloqueT]
   }
 
   const produccionC = {
     "id": "Produccion",
     "name": 'Nombre',
+    "x": am4core.percent(35),
+    "y": am4core.percent(50),
     "valorPropio": 'Produccion',
+    "fixed": true,
     "collapsed": true,
     "value": 1,
-    "link": ["Material2"],
-    "children": prod
+    "link": ["Material", "Distribucion", "Transporte"],
+    "children": [...prod, bloqueP]
   }
 
   const distribucionC = {
     "id": "Distribucion",
     "name": 'Nombre',
+    "x": am4core.percent(50),
+    "y": am4core.percent(40),
     "valorPropio": 'Distribucion',
+    "fixed": true,
     "collapsed": true,
     "value": 1,
-    "link": ["Material2"],
+    "link": ["Produccion", "Distribuidor"],
     "children": [...dist, bloqueD]
   }
 
   const distribuidorC = {
     "id": "Distribuidor",
     "name": 'Nombre',
+    "x": am4core.percent(65),
+    "y": am4core.percent(50),
     "valorPropio": 'Distribuidor',
+    "fixed": true,
     "collapsed": true,
     "value": 1,
-    "link": ["DistribucionID"],
+    "link": ["Dsitrubucion", "Tequila"],
     "children": [...distr, bloqueDr]
   }
 
   const tequilaC = {
     "id": "Tequila",
     "name": 'Nombre',
+    "x": am4core.percent(80),
+    "y": am4core.percent(70),
     "valorPropio": 'Tequila',
     "collapsed": true,
+    "fixed": true,
     "value": 1,
-    "link": ["DistribuidorID"],
+    "link": ["Distribuidor"],
     "children": [...teq, bloqueTq]
   }
 
   // Set data
-  series.data = [{
-    "id": "Material",
-    "name": 'Nombre',
-    "collapsed": false,
-    "valorPropio": 'Material',
-    "value": 1,
-    "children": [...mat, bloqueM]
-  }, transporteC, produccionC, distribucionC, distribuidorC, tequilaC];
+  series.data = [materialC, transporteC, produccionC, distribucionC, distribuidorC, tequilaC];
 
   // Set up data fields
   series.dataFields.value = "value";
@@ -291,6 +281,9 @@ import NoLoginLayout from '../layouts/NoLoginLayout.astro'
   series.maxRadius = 60;
   series.minRadius = 20;
   series.links.template.strokeWidth = 5;
+  series.dataFields.fixed = "fixed";
+  series.nodes.template.propertyFields.x = "x";
+  series.nodes.template.propertyFields.y = "y";
 
   hideLoader();
 </script>
@@ -298,6 +291,5 @@ import NoLoginLayout from '../layouts/NoLoginLayout.astro'
 <style>
   #chartdiv{
     height: 75vh;
-    overflow: auto;
   }
 </style>
