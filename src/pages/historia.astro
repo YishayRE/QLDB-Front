@@ -64,12 +64,14 @@ import NoLoginLayout from '../layouts/NoLoginLayout.astro'
       break;
   }
 
-  const {material, transporte, produccion, distribucion} = await resp.json();
+  const {material, transporte, produccion, distribucion, distribuidor, tequila} = await resp.json();
 
   const namesM = [];
   const namesT = [];
   const namesP = [];
   const namesD = [];
+  const namesDr = [];
+  const namesTq = [];
 
   for (const name in material.data)
     if (Object.hasOwnProperty.call(material.data, name))
@@ -86,11 +88,37 @@ import NoLoginLayout from '../layouts/NoLoginLayout.astro'
   for (const name in distribucion.data)
     if (Object.hasOwnProperty.call(distribucion.data, name))
       namesD.push(name);
+    
+  for (const name in distribuidor.data)
+    if (Object.hasOwnProperty.call(distribuidor.data, name))
+      namesDr.push(name);
+  
+  for (const name in tequila.data)
+    if (Object.hasOwnProperty.call(tequila.data, name))
+      namesTq.push(name);
 
   const chart = am4core.create("chartdiv", am4plugins_forceDirected.ForceDirectedTree);
   // Create series
 
   let series = chart.series.push(new am4plugins_forceDirected.ForceDirectedSeries())
+
+  const mat = namesM.map(name => {
+    if(name == '_idProduccion')
+      return {
+        "id": "Material2",
+        "name": name,
+        "collapsed": true,
+        "value": 0.75,
+        "valorPropio": material.data[name],
+        "link": ["Produccion", "Distribucion"],
+      }
+    return {
+      "name": name,
+      "collapsed": true,
+      "value": 0.75,
+      "valorPropio": material.data[name],
+    }
+  });
 
   const tran = namesT.map(name => {
     if(name == '_idMaterial')
@@ -114,19 +142,45 @@ import NoLoginLayout from '../layouts/NoLoginLayout.astro'
   });
 
   const dist = namesD.map(name => {
+    if(name == 'idProduccion')
+      return;
     return {
       "name": name,
       "collapsed": true,
       "value": 0.75,
       "valorPropio": distribucion.data[name],
     }
-  })
+  }).filter(item => item);
 
-  const bloqueD = {
+  const distr = namesDr.map(name => {
+    if(name == 'idDistribucion')
+      return;
+    return {
+      "name": name,
+      "collapsed": true,
+      "value": 0.75,
+      "valorPropio": distribuidor.data[name],
+    }
+  }).filter(item => item);
+
+  const teq = namesTq.map(name => {
+    if(name == 'idDistribuidor')
+      return;
+    return {
+      "name": name,
+      "collapsed": true,
+      "value": 0.75,
+      "valorPropio": tequila.data[name],
+    }
+  }).filter(item => item);
+
+  const bloqueM = {
+    "id": "Material1",
     "name": 'bloque',
-    "valorPropio": transporte.metadata.id,
+    "valorPropio": material.metadata.id,
     "collapsed": true,
     "value": 0.75,
+    "link": "Transporte",
   }
 
   const bloqueT = {
@@ -134,7 +188,32 @@ import NoLoginLayout from '../layouts/NoLoginLayout.astro'
     "valorPropio": transporte.metadata.id,
     "collapsed": true,
     "value": 0.75,
-  };
+  }
+
+  const bloqueD = {
+    "id": "DistribucionID",
+    "name": 'bloque',
+    "valorPropio": distribucion.metadata.id,
+    "collapsed": true,
+    "value": 0.75,
+    "link": "Distribuidor"
+  }
+
+  const bloqueDr = {
+    "id": "DistribuidorID",
+    "name": 'bloque',
+    "valorPropio": distribuidor.metadata.id,
+    "collapsed": true,
+    "value": 0.75,
+    "link": "Tequila"
+  }
+
+  const bloqueTq = {
+    "name": 'bloque',
+    "valorPropio": tequila.metadata.id,
+    "collapsed": true,
+    "value": 0.75,
+  }
 
   const transporteC = {
     "id": "Transporte",
@@ -159,39 +238,32 @@ import NoLoginLayout from '../layouts/NoLoginLayout.astro'
   const distribucionC = {
     "id": "Distribucion",
     "name": 'Nombre',
-    "valorPropio": 'Produccion',
+    "valorPropio": 'Distribucion',
     "collapsed": true,
     "value": 1,
     "link": ["Material2"],
-    "children": prod
+    "children": [...dist, bloqueD]
   }
 
-  const mat = namesM.map(name => {
-    if(name == '_idProduccion')
-      return {
-        "id": "Material2",
-        "name": name,
-        "collapsed": true,
-        "value": 0.75,
-        "valorPropio": material.data[name],
-        "link": "Produccion",
-      }
-    return {
-      "name": name,
-      "collapsed": true,
-      "value": 0.75,
-      "valorPropio": material.data[name],
-    }
-  });
-
-  const bloqueM = {
-    "id": "Material1",
-    "name": 'bloque',
-    "valorPropio": material.metadata.id,
+  const distribuidorC = {
+    "id": "Distribuidor",
+    "name": 'Nombre',
+    "valorPropio": 'Distribuidor',
     "collapsed": true,
-    "value": 0.75,
-    "link": "Transporte",
-  };
+    "value": 1,
+    "link": ["DistribucionID"],
+    "children": [...distr, bloqueDr]
+  }
+
+  const tequilaC = {
+    "id": "Tequila",
+    "name": 'Nombre',
+    "valorPropio": 'Tequila',
+    "collapsed": true,
+    "value": 1,
+    "link": ["DistribuidorID"],
+    "children": [...teq, bloqueTq]
+  }
 
   // Set data
   series.data = [{
@@ -201,7 +273,7 @@ import NoLoginLayout from '../layouts/NoLoginLayout.astro'
     "valorPropio": 'Material',
     "value": 1,
     "children": [...mat, bloqueM]
-  }, transporteC, produccionC];
+  }, transporteC, produccionC, distribucionC, distribuidorC, tequilaC];
 
   // Set up data fields
   series.dataFields.value = "value";
@@ -225,6 +297,7 @@ import NoLoginLayout from '../layouts/NoLoginLayout.astro'
 
 <style>
   #chartdiv{
-    height: 50vh;
+    height: 75vh;
+    overflow: auto;
   }
 </style>
