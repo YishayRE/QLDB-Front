@@ -50,6 +50,7 @@ import { Icon } from 'astro-icon'
   notification.style.display = 'none';
 
   submitButton.addEventListener('click', async(event) => {
+    showLoader();
     event.preventDefault();
 
     const object = {
