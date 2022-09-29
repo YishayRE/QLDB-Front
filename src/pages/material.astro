@@ -31,14 +31,8 @@ import MaterialForm from '../components/MaterialForm.astro';
         title="QR Generado"
         closeText="Cancel"
       >
-        <div class="grid small-grid-1 medium-grid-2">
-          <div id="qr-historico" style="margin: auto;
-          padding-top: 10px;"/>
-          <div id="qr-camino" style="margin: auto;
-          padding-top: 10px;"/>
-          <a id="qrRef-historico" href="" style="margin: auto; font-size: 1.5rem; font-weight: 200;">Ver historico</a>
-          <a id="qrRef-camino" href="" style="margin: auto; font-size: 1.5rem; font-weight: 200;">Ver camino</a>
-        </div>
+        <div id="qr-historico" style="margin: auto; width: 50%; padding-top: 10px;"/>
+        <a id="qrRef-historico" href="" style="margin: auto; font-size: 1.5rem; font-weight: 200;">Ver historico</a>
       </ModalCMat>
 
       {
@@ -82,9 +76,6 @@ import MaterialForm from '../components/MaterialForm.astro';
     
     const qrHistorico = document.getElementById("qr-historico");
     qrHistorico.innerHTML = '';
-
-    const qrCamino = document.getElementById("qr-camino");
-    qrCamino.innerHTML = '';
 
     if (!navigator.userAgent.match(/Android/i) && !navigator.userAgent.match(/iPhone/i)) {
       const qrCodeHistorico = new QRCodeStyling({
