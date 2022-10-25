@@ -133,7 +133,7 @@ const url = Astro.url;
 
   .ui-controls {
     position: absolute;
-    top: 1rem;
+    top: 1.25rem;
     right: 3.5rem;
 
     @include breakpoint(medium) {
@@ -163,7 +163,6 @@ const url = Astro.url;
   @use "../assets/scss/base/outline" as *;
 
   .darkmode-toggle {
-    padding: 0;
     border: none;
 
     svg {
@@ -184,7 +183,7 @@ const url = Astro.url;
 
     &:hover {
       svg path {
-        fill: var(--primary-400);
+        fill: var(--secondary-100);
       }
     }
 
@@ -200,7 +199,7 @@ const url = Astro.url;
 
     &:hover {
       svg path {
-        fill: var(--primary-400);
+        fill: var(--secondary-100);
       }
     }
   }
