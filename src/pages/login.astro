@@ -3,33 +3,30 @@ import LoginLayout from '../layouts/LoginLayout.astro'
 import LoginForm from '../components/LoginForm.astro'
 import { Notification } from 'accessible-astro-components'
 import { Icon } from 'astro-icon'
+import logo from "../assets/img/Logo_SelloVioleta.png";
 ---
 
 <LoginLayout title="Login">
-  <section class="background-color: #DEECFE;">
+  <section class="">
     <div class="login">
       <div class="login__inner reveal h-screen">
         <div class="inner__brand">
-          <div class="bg-neutral-900 radius-large space-8">
+          <div class="radius-large">
             <img
-              class="brand__logo radius-large"
-              src="/astro-logo.svg"
+              class="radius-large "
+              src={logo}
               alt=""
             >
-          </div>
-          <div class="brand__text">
-            <span>Astro Dashboard</span>
-            <span>An Accessible Astro Theme</span>
           </div>
         </div>
         <div class="inner__form space-content">
           <div class="space-content">
-            <h1>Login</h1>
+            <h1>Iniciar sesión</h1>
             <LoginForm />
           </div>
         </div>
         <div class="login__footer text-neutral-700">
-          <p><em>Blockchain with Astro.</em></p>
+          Made with <i class="fa fa-heart" id="footerIcon"></i> by <a href="http://www.wundertec.com" target="blank"><b>Wundertec</b></a>
         </div>
       </div>
       <div class="login__background h-screen" />
@@ -37,6 +34,7 @@ import { Icon } from 'astro-icon'
   </section>
 </LoginLayout>
 
+<link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
 <style lang="scss">
   @use '../assets/scss/base/breakpoint' as *;
   @use '../assets/scss/base/size' as *;
@@ -91,7 +89,7 @@ import { Icon } from 'astro-icon'
     .login__background {
       display: none;
       background-color: #000;
-      background-image: url("/blockchain.jpg");
+      background-image: url("https://img.freepik.com/free-photo/tequila_23-2148014874.jpg?w=826&t=st=1666722900~exp=1666723500~hmac=413145feded1d97475c01dc7c0ae0755499877171f15a24baee4a89b12c5cb27");
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
