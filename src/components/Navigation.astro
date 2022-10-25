@@ -35,8 +35,8 @@ import { Icon } from 'astro-icon'
     </nav>
   </div>
   <div class="container mobile-menu padding-16">
-    <a href="/">
-      <img src={(await import('../assets/img/logo.png')).default} alt="Your Logo">
+    <a href="/" style="width: 50%;">
+      <img src={(await import('../assets/img/logoNombre.png')).default} alt="Your Logo">
     </a>
     <ResponsiveToggle />
     <nav>
@@ -386,7 +386,7 @@ import { Icon } from 'astro-icon'
         }
       }
 
-      svg {
+      img {
         width: 35px;
       
         path {
